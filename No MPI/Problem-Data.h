@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: BIP (Block-lterative Projection) method (No MPI)
 Module: Problem-Data.h (Problem Data)
 Prefix: PD
@@ -9,12 +9,11 @@ This source code has been produced with using BSF-skeleton
 #include "Problem-Types.h"		// Problem Parameters 
 using namespace std;
 //========================== Problem variables ====================================
-static int		PD_m;				// Current number of inequalities
+static int		PD_m;				// Number of inequalities
 static int		PD_n;				// Space dimension
 static int		PD_iterNo;			// Number of iterations
 static double	PD_cos;				// Cosine between previous and next projecting vectors
 static double	PD_normPrevious_r;	// Norm of previous projecting vector
-static double	PD_shiftLength;		// Shift length
 static bool		PD_noFile_x0;		// Input file *_x0.mtx does not exist
 //========================== Problem structures ====================================
 static PT_matrix_T PD_A;			// Matrix of coefficients of inequalities

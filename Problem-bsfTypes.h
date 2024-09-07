@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: BIP (Block-lterative Projection) method (MPI)
 Module: Problem-bsfTypes.h (Predefined BSF Problem Types)
 Prefix: PT_bsf
@@ -32,5 +32,5 @@ struct PT_bsf_reduceElem_T_2 {	// Type of reduce-list elements for Job 2
 };
 
 struct PT_bsf_reduceElem_T_3 {	// Type of reduce-list elements for Job 3
-// Not used
+	// Not used
 };

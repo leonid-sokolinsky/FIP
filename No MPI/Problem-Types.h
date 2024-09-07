@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: BIP (Block-lterative Projection) method (No MPI)
 Module: Problem-Types.h (BSF Types)
 Prefix: PT

@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: BIP (Block-lterative Projection) method (No MPI)
 Module: Problems22-1.h (LP problems of dimension 22 with 1 randome inequality)
 Prefix: PP

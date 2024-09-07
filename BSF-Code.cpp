@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: BIP (Block-lterative Projection) method (MPI)
 Module: BSF-Code.cpp (Problem Independent Code)
 Prefix: BC
