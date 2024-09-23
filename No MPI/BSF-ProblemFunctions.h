@@ -14,7 +14,7 @@ void PC_bsf_CopyParameter(
 void PC_bsf_Init(
 	bool* success
 );
-void PC_bsf_MapInit(
+void PC_bsf_IterInit(
 	PT_bsf_parameter_T parameter
 );
 void PC_bsf_IterOutput(

@@ -9,7 +9,7 @@ LP problems were obtained using BSF-LPP-Generator.
 ==============================================================================*/
 #pragma once
 
-#define PP_SIMPLE_CONVERSION
+#define PP_MPS_FORMAT
 
 /*============================== adlittle LP problem ===============*
 #define PP_PROBLEM_NAME		"adlittle"
@@ -19,7 +19,7 @@ LP problems were obtained using BSF-LPP-Generator.
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11	// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		1E-5	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
 #define PP_EPS_COS					1E-9	// Precision for cos == 1
 #define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
@@ -34,7 +34,6 @@ LP problems were obtained using BSF-LPP-Generator.
 #define PP_EPS_ZERO					1E-11	// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-//#define PP_EPS_ON_HYPERPLANE		1E-5	// Accuracy of belonging to hyperplane
 #define PP_EPS_COS					1E-2	// Precision for cos == 1
 #define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
