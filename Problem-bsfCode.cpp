@@ -896,11 +896,10 @@ namespace SF {
 		for (int i_row = 0; i_row < n_row; i_row++)
 			row[i_row].RHS_value = 0;
 
-		MPS_ReadRHS_line(stream, row, n_row, RHS_name);
-
 		fgetpos(stream, &pos);
 		ch = getc(stream);
 		while (ch == ' ') {
+			fsetpos(stream, &pos);
 			MPS_ReadRHS_line(stream, row, n_row, RHS_name);
 
 			fgetpos(stream, &pos);
@@ -1170,17 +1169,26 @@ namespace SF {
 		float RHS_value;
 		int rowIndex;
 
-		ch = getc(stream);
-		if (ch != ' ') {
-			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "MPS_ReadRHS_line: Syntax error, expected ' '\n";
-			return false;
+		for (int p = 0; p < 4; p++) {
+			ch = getc(stream);
+			if (ch != ' ') {
+				if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+					cout << "MPS_ReadRHS_line: Syntax error, expected ' '\n";
+				return false;
+			}
 		}
 
-		MPS_SkipSpaces(stream);
+		int p = 0;
+		fgetpos(stream, &pos);
+		while (getc(stream) == ' ')
+			p++;
+		fsetpos(stream, &pos);
 
-		if (!MPS_ReadName(stream, next_RHS_name))
-			return false;
+		if (p > 8)
+			next_RHS_name[0] = ' ';
+		else
+			if (!MPS_ReadName(stream, next_RHS_name))
+				return false;
 
 		if (RHS_name[0] != '\0') {
 			if (!MPS_SameNames(RHS_name, next_RHS_name)) {
