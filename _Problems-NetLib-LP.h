@@ -42,7 +42,6 @@ LP problems were obtained using BSF-LPP-Generator.
 //------------------------------------------------------------------/**/
 
 /*============================== beaconfd LP problem ==================*
-// Distance to polytope: 9.99994230306940206655895e-06
 #define PP_PROBLEM_NAME		"beaconfd"
 #define PP_M 575	// Number of equations (after conversion to standard form)
 #define PP_N 262	// Number of variables (after conversion to standard form)
@@ -56,8 +55,7 @@ LP problems were obtained using BSF-LPP-Generator.
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO)	// Precision for point to be inside cone
 //------------------------------------------------------------------/**/
 
-/*============================== blend LP problem ==================*/
-// Distance to polytope: 9.99548788756706405066784e-06
+/*============================== blend LP problem ==================*
 #define PP_PROBLEM_NAME		"blend"
 #define PP_M 74		// Number of equations (after conversion to standard form)
 #define PP_N 83		// Number of variables (after conversion to standard form)
@@ -71,15 +69,15 @@ LP problems were obtained using BSF-LPP-Generator.
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //------------------------------------------------------------------/**/
 
-/*============================== fit1d LP problem ==================*
+/*============================== fit1d LP problem ==================*/
 // Zero point is feasible
 #define PP_PROBLEM_NAME		"fit1d"
-#define PP_M 24		// Number of equations (after conversion to standard form)
-#define PP_N 1049	// Number of variables (after conversion to standard form)
+#define PP_M 1051		// Number of equations (after conversion to standard form)
+#define PP_N 1026	// Number of variables (after conversion to standard form)
 //--------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-7	// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		1E-5	// Accuracy of belonging to hyperplane
+#define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
+#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
 #define PP_EPS_COS					1E-4	// Precision for cos == 1
 #define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone

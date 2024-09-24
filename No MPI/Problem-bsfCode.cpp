@@ -898,6 +898,10 @@ namespace SF {
 
 		fgetpos(stream, &pos);
 		ch = getc(stream);
+		if (ch == 'B') {
+			fsetpos(stream, &pos);
+			return true;
+		}
 		while (ch == ' ') {
 			fsetpos(stream, &pos);
 			MPS_ReadRHS_line(stream, row, n_row, RHS_name);
