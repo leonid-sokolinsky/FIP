@@ -9,6 +9,7 @@ This source code has been produced with using BSF-skeleton
 #include "Problem-Types.h"
 //====================== Shared Functions ===========================
 namespace SF {
+	unsigned long long BinomialCoefficient(int n, int k);
 	double	Distance_PointToHalfspace_i(PT_vector_T x, int i);
 	double	Distance_PointToHyperplane_i(PT_vector_T x, int i);
 	double	Distance_PointToPoint(PT_vector_T x, PT_vector_T y);
@@ -17,21 +18,21 @@ namespace SF {
 	void	JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double eps);
 	void	MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a);
 	void	MakeListOfNotIncludingHalfspaces(PT_vector_T x, int* notIncludingHalfspacesList, double eps);
-	void	MakePointHyperplaneList(PT_vector_T u, int* pointHyperplaneList, int* mh, double eps);
+	void	MakeNeHyperplaneList(PT_vector_T u, int* pointHyperplaneList, int* mneh, double eps);
 	void	MovingToPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsMoving);
 	bool	MPS___Load_Problem();
-	bool	MPS__MakeProblem(PT_MPS_row_T* row, int n_row, PT_MPS_column_T* column, int n_col, double* loBound, PT_MPS_upBound_T* upBounds, int n_up);
-	bool	MPS__ReadBounds(FILE* stream, PT_MPS_column_T* column, int n_col, double* loBound, PT_MPS_upBound_T* upBound, int* n_up);
+	bool	MPS__MakeProblem(PT_MPS_row_T* row, int n_row, PT_MPS_column_T* column, int n_col, double* loBound, PT_MPS_upBound_T* upBounds, int n_up, PT_MPS_fxVariable_T* fxVariable, int n_fx);
+	bool	MPS__ReadBounds(FILE* stream, PT_MPS_column_T* column, int n_col, double* loBound, PT_MPS_upBound_T* upBound, int* n_up, PT_MPS_fxVariable_T* fxVariable, int* n_fx);
 	bool	MPS__ReadColumns(FILE* stream, PT_MPS_column_T* columns, int* n_col);
 	bool	MPS__ReadKeyWord(FILE* stream, string* word, string pattern);
 	bool	MPS__ReadRHS(FILE* stream, PT_MPS_row_T* row, int n_row);
 	bool	MPS__ReadRows(FILE* stream, PT_MPS_row_T* rows, int* n_row);
 	void	MPS__SetColumnIndexes(PT_MPS_column_T* column, int n_col, int* n_A);
 	void	MPS__SkipComment(FILE* stream);
-	void	MPS_AddEquation(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col);
-	void	MPS_AddInequality_G(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col);
-	void	MPS_AddInequality_L(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col);
-	void	MPS_AddObjectiveFunction(PT_MPS_name_T rowName, PT_MPS_column_T* column, int n_col);
+	bool	MPS_AddEquation(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col);
+	bool	MPS_AddInequality_G(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col);
+	bool	MPS_AddInequality_L(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col);
+	bool	MPS_AddObjectiveFunction(PT_MPS_name_T rowName, PT_MPS_column_T* column, int n_col);
 	void	MPS_CopyName(char* name_x, char* name_y);
 	void	MPS_NewLine(FILE* stream);
 	bool	MPS_ReadColumnLine(FILE* stream, PT_MPS_column_T* column, int* n_col);
@@ -44,16 +45,17 @@ namespace SF {
 	void	MPS_SkipSpaces(FILE* stream);
 	bool	MPS_UniqueRowName(PT_MPS_row_T* rows, int n_row, PT_MPS_name_T name);
 	void	MTX_Conversion();
-	bool	MTX_Load__Problem();
+	bool	MTX__Load_Problem();
 	bool	MTX_Load_A();
 	bool	MTX_Load_b();
 	bool	MTX_Load_c();
 	bool	MTX_Load_hi();
 	bool	MTX_Load_lo();
 	bool	MTX_LoadPoint(PT_vector_T x, string postfix);
-	void	MTX_RemoveFreeVariables(int m_equation, int m_inequality, int m_lowerBound, int m_higherBound);
+	void	MTX_RemoveFreeVariables(void);
 	bool	MTX_SavePoint(PT_vector_T x, string postfix);
 	void	MTX_SkipComments(FILE* stream);
+	int		Number_IncludingNeHyperplanes(PT_vector_T x, double eps);
 	double	ObjF(PT_vector_T x);
 	void	ObliqueProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T g, PT_vector_T o, double eps, int* exitCode);
 	void	OrthogonalProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T r, double eps, int* exitcode);
@@ -66,7 +68,7 @@ namespace SF {
 	bool	PointInsideHalfspace_i(PT_vector_T x, int i, double eps);
 	int		PointLocation_i(PT_vector_T x, int i, double eps, double* a_DoT_x_MinuS_b);
 	void	PolytopeHomothety(PT_vector_T center, double ratio);
-	void	Print_Inequalities();
+	void	Print_Constraints();
 	void	Print_HalfspacesIncludingPoint(PT_vector_T x, double eps);
 	void	Print_HalfspacesOutOfPoint(PT_vector_T x, double eps);
 	void	Print_HyperplanesIncludingPoint(PT_vector_T x, double eps);

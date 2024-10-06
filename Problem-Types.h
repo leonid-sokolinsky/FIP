@@ -33,3 +33,8 @@ struct PT_MPS_upBound_T {
 	int varIndex;
 	double value;
 };
+
+struct PT_MPS_fxVariable_T {
+	int varIndex;
+	double value;
+};
