@@ -76,7 +76,7 @@ void PC_bsf_IterOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_
 	cout << "# " << BSF_sv_iterCounter << "\tTime " << round(elapsedTime);
 	cout << "\tx =";
 	Print_Vector(parameter.x);
-	cout << "\tF(t) = " << setw(PP_SETW) << ObjF(parameter.x) << "\tDistance: " << Distance_PointToPolytope(parameter.x);
+	cout << "\tF(t) = " << setw(PP_SETW) << ObjF(parameter.x) << "\tDistance: " << Distance_PointToPolytope(parameter.x) << endl;
 #ifdef PP_SAVE_ITER_IN_X0
 	if (MTX_SavePoint(parameter.x, PP_MTX_POSTFIX_X0))
 		cout << ". x is saved into x0." << endl;
@@ -177,9 +177,10 @@ void PC_bsf_MapF_3(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T_3* reduceElem,
 void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "=================================================== " << PP_METHOD_NAME << " ====================================================" << endl;
 	cout << "Problem name: " << PD_problemName << endl;
+
 #ifdef PP_MPS_FORMAT
 	cout << "Input format: MPS" << endl;
-	cout << "m =\t" << PD_m << "\tn = " << PD_n << endl;
+	cout << "m =\t" << PD_m << "\tn = " << PD_n << " (after conversion into standard form)" << endl;
 #else
 	cout << "Input format: MTX (with elimination of free variables)" << endl;
 	cout << "Before elimination: m =\t" << PP_M << "\tn = " << PP_N << endl;
@@ -755,9 +756,21 @@ namespace SF {
 				break;
 			default:
 				if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-					cout << "MPS__ReadRows: error - unpredictable row type " << row[i_row].type << endl;
+					cout << "MPS__MakeProblem error:Unpredictable row type " << row[i_row].type << endl;
 				return false;
 			}
+		}
+
+		if (PD_m != PP_M) {
+			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+				cout << "MPS__MakeProblem error: Number of constraints in mps-file = " << PD_m << " not equal to PP_M = " << PP_M << ".\n";
+			return false;
+		}
+
+		if (PD_n != PP_N) {
+			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+				cout << "MPS__MakeProblem error: Number of variables in mps-file = " << PD_n << " not equal to PP_M = " << PP_N << ".\n";
+			return false;
 		}
 
 		for (int j = 0; j < PD_n; j++) { // Adding lower bounds
@@ -1090,15 +1103,15 @@ namespace SF {
 					if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 						cout << "MPS_AddObjectiveFunction error: Coefficient redefinition of the objective function for " << column[i_col].varName << ".\n";
 					return false;
-			}
+				}
 #ifdef MPS_MIN_OF_OBJECTIVE_FUNCTION
 				PD_c[column[i_col].j] = column[i_col].value;
 #else
 				PD_c[column[i_col].j] = -column[i_col].value;
 #endif
-	}
+			}
 		return true;
-}
+	}
 
 	static inline void MPS_CopyName(char* name_x, char* name_y) {
 		for (int p = 0; p < 9; p++)
@@ -1544,13 +1557,13 @@ namespace SF {
 
 		if (noc != PP_N) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "Invalid input data: PP_N must be = " << noc << "\n";
+				cout << "MTX_Load_A error: PP_N must be = " << noc << "\n";
 			return false;
 		}
 
 		if (nor != PP_M) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "Invalid input data: PP_M must be = " << nor << "\n";
+				cout << "MTX_Load_A error:  PP_M must be = " << nor << "\n";
 			return false;
 		}
 
