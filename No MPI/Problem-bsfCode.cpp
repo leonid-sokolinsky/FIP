@@ -2248,14 +2248,11 @@ namespace SF {
 			me = (unsigned long long) mneh;
 		else {
 
-#ifdef PP_DEBUG
 			if (mneh > 62) {
-				cout << "\nError in Print_Number_of_edges(): It is impossible to calculate binomial coefficient for number of including hyperplanes mneh = "
+				cout << "Can't calculate binomial coefficient for number of including hyperplanes mneh = "
 					<< mneh << " > 62" << endl;
-				exit(1);
+				return;
 			}
-#endif // PP_DEBUG
-
 			me = BinomialCoefficient(mneh, PD_neq - 1);
 		}
 		cout << me << endl;
