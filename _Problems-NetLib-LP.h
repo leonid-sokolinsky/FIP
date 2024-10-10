@@ -10,7 +10,7 @@ This include file is part of Problem-Parameters.h
 
 #define PP_MPS_FORMAT
 
-/*============================== adlittle LP problem =======================*/
+/*============================== adlittle LP problem =======================*
 // Number of equations : 15
 // Subspace dimension : 82
 #define PP_PROBLEM_NAME		"adlittle"
@@ -25,9 +25,10 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
-// Elapsed time: 0.9822003
-// Number of iterations: 81273
-// Number of including hyperplanes: 47
+// Elapsed time: 3
+// Number of iterations: 96889
+// Number of including inequality hyperplanes: 34
+// Objective function: -652787
 //--------------------------------------------------------------------------
 
 /*============================== afiro LP problem ==========================*
@@ -45,9 +46,10 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
-// Elapsed time: 0.0663803
+// Elapsed time: 0
 // Number of iterations: 13237
-// Number of including hyperplanes: 31
+// Number of including inequality hyperplanes: 23
+// Objective function: -153.138
 //--------------------------------------------------------------------------
 
 /*============================== beaconfd LP problem =======================*
@@ -65,9 +67,10 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO)	// Precision for point to be inside cone
 //---------------------------------------------------------------------
-// Elapsed time: 40.37999
-// Number of iterations: 547738
-// Number of including hyperplanes: 265
+// Elapsed time: 104
+// Number of iterations: 548860
+// Number of including inequality hyperplanes: 125
+// Objective function: -33854.64
 //---------------------------------------------------------------------
 
 /*============================== blend LP problem =====================*
@@ -120,7 +123,7 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
-// Elapsed time: 0.0055739
+// Elapsed time: 0
 // Number of iterations: 143
 // Number of including inequality hyperplanes: 141
 // Objective function: 85567.12
@@ -159,17 +162,17 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
 #define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
-// Elapsed time: 0.4188516
-// Number of iterations: 9287
-// Number of including inequality hyperplanes: 218
-// Objective function: 110.3237
+// Elapsed time: 2
+// Number of iterations: 13602
+// Number of including inequality hyperplanes: 190
+// Objective function: 104.8237
 //--------------------------------------------------------------------------
 
-/*============================== sc50a LP problem ==========================*
+/*============================== sc50a LP problem ==========================*/
 // Number of equations: 20
 // Subspace dimension: 28
 #define PP_PROBLEM_NAME		"sc50a"
-#define PP_M 50	// Number of constraints in mps-file
+#define PP_M 49	// Number of constraints in mps-file
 #define PP_N 48		// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 64.575077058564509026860413914575	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
@@ -233,4 +236,5 @@ This include file is part of Problem-Parameters.h
 // Number of including inequality hyperplanes: 39
 // Objective function: 354.6537
 //----------------------------------------------------------------------------
-//----------------------------------------------------------------------------/**/
+
+//============================================================================/**/
