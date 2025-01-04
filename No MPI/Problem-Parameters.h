@@ -34,7 +34,6 @@ This source code has been produced with using BSF-skeleton
 //-------------------------- Compilation Modes -----------------------
 #define PP_DEBUG
 //#define PP_MATRIX_OUTPUT
-//#define PP_COS_MODE
 //#define PP_SAVE_ITER_IN_X0
 //#define PP_SAVE_RESULT
 

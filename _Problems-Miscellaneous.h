@@ -8,15 +8,10 @@ This include file is part of Problem-Parameters.h
 ==============================================================================*/
 #pragma once
 
-//#define PP_COS_MODE
-
 //=========================== problem Parameters ========================
 #define PP_EPS_ZERO					1E-11	// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO)	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					1E-2	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 
 /*============================== simpleCube LP problem ==========================*
 #define PP_MPS_FORMAT

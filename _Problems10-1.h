@@ -9,15 +9,11 @@ LP problems were obtained using BSF-LPP-Generator.
 ===============================================================================*/
 #pragma once
 
-//#define PP_COS_MODE
-
 //=========================== Method Parameters ===============================
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
 #define PP_EPS_COS					PP_EPS_ZERO	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO /100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO /100)	// Precision for point to be inside cone
 //-------------------------------------------------------------------------------
 #define PP_M 11		// Number of equations (number of rows in *.mtx)
 #define PP_N 21		// Number of variables (number of cols in *.mtx)

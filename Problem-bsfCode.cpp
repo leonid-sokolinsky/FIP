@@ -60,10 +60,6 @@ void PC_bsf_Init(bool* success) {
 	}
 
 	PD_iterNo = 0;
-#ifdef PP_COS_MODE
-	PD_cos = 0;
-	PD_normPrevious_r = 0;
-#endif
 }
 
 void PC_bsf_IterInit(PT_bsf_parameter_T parameter) {
@@ -180,7 +176,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 
 #ifdef PP_MPS_FORMAT
 	cout << "Input format: MPS" << endl;
-	cout << "m =\t" << PD_m << "\tn = " << PD_n << " (after adding bounds)" << endl;
+	cout << "m = " << PD_m << "\tn = " << PD_n << " (after conversion into standard form)" << endl;
 #else
 	cout << "Input format: MTX (with elimination of free variables)" << endl;
 	cout << "Before elimination: m =\t" << PP_M << "\tn = " << PP_N << endl;
@@ -209,17 +205,9 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "Map List is not Fragmented" << endl;
 #endif
 
-#ifdef PP_COS_MODE
-	cout << "Cos mode is on." << endl;
-#else
-	cout << "Cos mode is off." << endl;
-#endif
 	cout << "PP_EPS_ZERO\t\t\t" << PP_EPS_ZERO << endl;
 	cout << "PP_EPS_POINT_IN_HALFSPACE\t" << PP_EPS_POINT_IN_HALFSPACE << endl;
 	cout << "PP_EPS_ON_HYPERPLANE\t\t" << PP_EPS_ON_HYPERPLANE << endl;
-	cout << "PP_EPS_COS\t\t\t" << PP_EPS_COS << endl;
-	cout << "PP_EPS_MOVING\t\t\t" << PP_EPS_MOVING << endl;
-	cout << "PP_EPS_POINT_INSIDE_CONE\t" << PP_EPS_POINT_INSIDE_CONE << endl;
 	cout << "--------------- Data ---------------\n";
 #ifdef PP_MATRIX_OUTPUT
 	cout << "------- Matrix PD_A & Column PD_b -------" << endl;
@@ -274,12 +262,7 @@ void PC_bsf_ProblemOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCount
 	// Not used
 }
 
-void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T* parameter, int* nextJob, bool* exit) {
-#ifdef PP_COS_MODE
-	PT_vector_T x_moved;
-	double shiftLength;
-	double distance;
-#endif // PP_COS_MODE
+void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T* parameter, int* nextJob, bool* toExit) {
 
 	PD_iterNo++;
 
@@ -287,13 +270,13 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 	if (BSF_sv_iterCounter > PP_MAX_ITER_COUNT) {
 		cout << "-------------> PC_bsf_ProcessResults: Acceptable maximum number of iterations is exceeded: PP_MAX_ITER_COUNT = "
 			<< PP_MAX_ITER_COUNT << endl;
-		*exit = true;
+		*toExit = true;
 		return;
 	};
 #endif // PP_MAX_ITER_COUNT
 
 	if (reduceResult->nonZeroCounter == 0) {
-		*exit = true;
+		*toExit = true;
 		return;
 	}
 
@@ -309,46 +292,6 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 	cout << "\t||r|| = " << Vector_Norm(reduceResult->projectingVector) << endl;
 	cout << "x = "; Print_Vector(parameter->x); cout << endl;
 #endif // PP_DEBUG /**/
-
-#ifdef PP_COS_MODE
-	double norm_r = Vector_Norm(reduceResult->projectingVector);
-	if (PD_normPrevious_r != 0)
-		PD_cos = Vector_DotProduct(PD_previous_r, reduceResult->projectingVector) / (PD_normPrevious_r * norm_r);
-	Vector_Copy(reduceResult->projectingVector, PD_previous_r);
-	PD_normPrevious_r = norm_r;
-#endif
-
-	/*DEBUG PC_bsf_ProcessResults**
-#ifdef PP_DEBUG
-	//cout << "x = "; Print_Vector(parameter->x); cout << endl;
-	cout << "x is out of half-spaces: "; Print_HalfspacesOutOfPoint(parameter->x, PP_EPS_POINT_IN_HALFSPACE);
-	cout << "\tcos = " << PD_cos << endl;
-	cout << "Distance to polytope: " << Distance_PointToPolytope(parameter->x) << endl;
-#endif // PP_DEBUG /**/
-
-#ifdef PP_COS_MODE
-	distance = Distance_PointToPolytope(parameter->x);
-	if (Distance_PointToPolytope(parameter->x) < PP_EPS_MOVING) {
-		*exit = true;
-		return;
-	}
-
-	if (1 - PD_cos >= PP_EPS_COS)
-		return;
-
-	MovingToPolytope(parameter->x, reduceResult->projectingVector, x_moved, PP_EPS_MOVING);
-	shiftLength = Distance_PointToPoint(parameter->x, x_moved);
-	Vector_Copy(x_moved, parameter->x);
-
-	/*DEBUG PC_bsf_ProcessResults**
-#ifdef PP_DEBUG
-	cout << "--------------------------------- MovingToPolytope -----------------------------------------\n";
-	cout << "Shift = " << shiftLength << endl;
-	cout << "x = "; Print_Vector(parameter->x); cout << endl;
-	cout << "x on hyperplanes: "; Print_HyperplanesIncludingPoint(parameter->x, PP_EPS_ON_HYPERPLANE);
-	cout << "\nDistance to polytope: " << Distance_PointToPolytope(parameter->x) << endl;
-#endif // PP_DEBUG /**/
-#endif
 }
 
 void PC_bsf_ProcessResults_1(PT_bsf_reduceElem_T_1* reduceResult, int reduceCounter, PT_bsf_parameter_T* parameter, int* nextJob, bool* exit) {
@@ -2365,28 +2308,28 @@ namespace SF {
 	}
 
 	static inline void Print_Number_of_edges(PT_vector_T x) {
-		int mneh_u;
-		unsigned long long me;
+		int mne;
+		unsigned long long ull_mne;
 
-		mneh_u = 0;
+		mne = 0;
 		for (int i = 0; i < PD_m; i++) {
 			if (PD_isEquation[i])
 				continue;
 			if (PointBelongsHyperplane_i(x, i, PP_EPS_POINT_IN_HALFSPACE))
-				mneh_u++;
+				mne++;
 		}
 
-		if (mneh_u == PD_neq)
-			me = (unsigned long long) mneh_u;
+		if (mne == PD_neq)
+			ull_mne = (unsigned long long) mne;
 		else {
-			if (mneh_u > 62) {
-				cout << "Warning: Can't calculate binomial coefficient for number of including hyperplanes mneh_u = "
-					<< mneh_u << " > 62" << endl;
+			if (mne > 62) {
+				cout << "Warning: Can't calculate binomial coefficient for number of including hyperplanes mne = "
+					<< mne << " > 62" << endl;
 				return;
 			}
-			me = BinomialCoefficient(mneh_u, PD_neq - 1);
+			ull_mne = BinomialCoefficient(mne, PD_neq - 1);
 		}
-		cout << me << endl;
+		cout << ull_mne << endl;
 	}
 
 	static inline void Print_Vector(PT_vector_T x) {

@@ -21,9 +21,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					1E-9		// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
 // Elapsed time: 3
 // Number of iterations: 96889
@@ -42,9 +39,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					1E-2		// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 13237
@@ -63,9 +57,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					1E-2	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO)	// Precision for point to be inside cone
 //---------------------------------------------------------------------
 // Elapsed time: 104
 // Number of iterations: 548860
@@ -84,9 +75,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					1E-10	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
 // Zero point is feasible
 //--------------------------------------------------------------------------
@@ -102,9 +90,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					1E-4	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
 // Zero point is feasible
 //--------------------------------------------------------------------------
@@ -119,9 +104,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					0		// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 143
@@ -140,9 +122,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					1E-4	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
 // Zero point is feasible
 //--------------------------------------------------------------------------
@@ -158,9 +137,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					1E-2	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //--------------------------------------------------------------------------
 // Elapsed time: 2
 // Number of iterations: 13602
@@ -179,9 +155,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_EPS_COS					1E-3	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //----------------------------------------------------------------------------
 // Zero point is feasible
 //----------------------------------------------------------------------------
@@ -195,9 +168,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-9	// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		1E-7	// Accuracy of belonging to polytope
-#define PP_EPS_COS					1E-2	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //----------------------------------------------------------------------------
 // Zero point is feasible
 //----------------------------------------------------------------------------
@@ -211,9 +181,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-9	// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		1E-7	// Accuracy of belonging to polytope
-#define PP_EPS_COS					1E-2	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //----------------------------------------------------------------------------
 // Zero point is feasible.
 //----------------------------------------------------------------------------
@@ -227,9 +194,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to polytope
-#define PP_EPS_COS					1E-3	// Precision for cos == 1
-#define PP_EPS_MOVING				(PP_EPS_ZERO/100)	// Precision for mooving
-#define PP_EPS_POINT_INSIDE_CONE	(PP_EPS_ZERO/100)	// Precision for point to be inside cone
 //----------------------------------------------------------------------------
 // Elapsed time: 1550
 // Number of iterations: 79885851
