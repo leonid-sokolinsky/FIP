@@ -68,6 +68,7 @@ namespace SF {
 	bool	PointBelongsPolytope(PT_vector_T x, double eps);
 	void	PointHomothety(PT_vector_T x, PT_vector_T center, double ratio);
 	bool	PointInsideHalfspace_i(PT_vector_T x, int i, double eps);
+	bool	PointIsVertex_i(PT_vector_T x, double  eps);
 	int		PointLocation_i(PT_vector_T x, int i, double eps, double* a_DoT_x_MinuS_b);
 	void	PolytopeHomothety(PT_vector_T center, double ratio);
 	void	Print_Constraints();

@@ -2218,6 +2218,19 @@ namespace SF {
 		return false;
 	}
 
+	static inline bool PointIsVertex_i(PT_vector_T x, double eps) {
+		int hCount = 0;
+
+		for (int i = 0; i < PD_m; i++)
+			if (PointBelongsHyperplane_i(x, i, eps))
+				hCount++;
+
+		if (hCount >= PD_n)
+			return true;
+		else
+			return false;
+	}
+
 	static inline int PointLocation_i(PT_vector_T x, int i, double eps, double* a_DoT_x_MinuS_b) {
 
 		if (PD_norm_a[i] < PP_EPS_ZERO)
