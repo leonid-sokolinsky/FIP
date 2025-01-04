@@ -36,7 +36,7 @@ This source code has been produced with using BSF-skeleton
 //#define PP_MATRIX_OUTPUT
 //#define PP_COS_MODE
 //#define PP_SAVE_ITER_IN_X0
-#define PP_SAVE_RESULT
+//#define PP_SAVE_RESULT
 
 //=========================== Problem Parameters =========================
 #ifdef PP_MPS_FORMAT
@@ -61,9 +61,10 @@ This source code has been produced with using BSF-skeleton
 #define PP_MTX_POSTFIX_X0	"_x0.mtx" // Starting point
 #define PP_MTX_POSTFIX_Z0	"_z0.mtx" // Boundary point
 //------------------------- MPS format ----------------
+#define PP_MPS_NAME_LENGTH	9
 #define PP_MPS_PREFIX		"lp_"
 #define PP_MPS_EXTENSION	".mps"
-#define PP_MAX_NUMBER_OF_ROWS	(PP_M+2)
+#define PP_MAX_NUMBER_OF_ROWS	(PP_M+3)
 #define PP_MAX_NUMBER_OF_COLS	(PP_N*(PP_M+1)+1)
 //-------------------------- Jobs  -----------------------
 // Not used.

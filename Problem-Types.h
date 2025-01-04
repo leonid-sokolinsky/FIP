@@ -14,7 +14,7 @@ typedef double PT_matrix_T[PP_MM][PP_N];
 typedef double PT_vector_T[PP_N];
 typedef double PT_column_T[PP_MM];
 
-typedef char PT_MPS_name_T[9];
+typedef char PT_MPS_name_T[PP_MPS_NAME_LENGTH];
 
 struct PT_MPS_row_T {
 	PT_MPS_name_T name;

@@ -1,4 +1,4 @@
-﻿/*==============================================================================
+/*==============================================================================
 Project: LiFe - New Linear Programming Solvers
 Theme: BIP (Block-lterative Projection) method (No MPI)
 Module: Problem-bsfCode.cpp (Implementation of Problem Code)
@@ -462,6 +462,91 @@ namespace SF {
 		return Vector_NormSquare(z);
 	}
 
+	static inline void Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_bipprojection_round, double eps_zero, int maxProjectingIter, PT_vector_T w, int* success) {
+		PT_vector_T r;
+		PT_vector_T w_previous;
+		double dist;
+		int iterCount = 0;
+
+		Vector_Copy(v, w);
+		*success = true;
+
+		do {
+			Vector_Zeroing(r);
+			Vector_Copy(w, w_previous);
+
+			for (int i = 0; i < m_flat; i++) {
+				PT_vector_T p;
+				OrthogonalProjectingVectorOntoHyperplane_i(w, flatHyperplanes[i], p);
+				Vector_PlusEquals(r, p);
+			}
+
+			Vector_DivideEquals(r, m_flat);
+			Vector_Round(r, eps_bipprojection_round);
+			Vector_PlusEquals(w, r);
+
+			iterCount++;
+			if (iterCount > maxProjectingIter) {
+				*success = false;
+				break;
+			}
+			dist = Distance_PointToPoint(w, w_previous);
+		} while (dist >= eps_zero);
+		/*DEBUG PC_bsf_MapF**
+#ifdef PP_DEBUG
+		cout << "Flat_BipProjection: iterCount = " << iterCount << endl;
+#endif // PP_DEBUG /**/
+	}
+
+	static inline void Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_maxprojection_zero, double eps_zero, int maxProjectingIter, PT_vector_T w, int* success) {
+		PT_vector_T w_previous;
+		PT_vector_T w_max;
+		double dist;
+		double max_dist;
+		int max_i;
+		int iterCount = 0;
+
+		Vector_Copy(v, w);
+		*success = true;
+
+		do {
+			Vector_Copy(w, w_previous);
+
+			max_dist = 0;
+			max_i = -1;
+			for (int i = 0; i < m_flat; i++) {
+				PT_vector_T p;
+				OrthogonalProjectingVectorOntoHyperplane_i(w, flatHyperplanes[i], p);
+				dist = Vector_Norm(p);
+				if (dist >= max_dist + eps_maxprojection_zero) {
+					Vector_Addition(w, p, w_max);
+					max_dist = dist;
+					max_i = i;
+				}
+			}
+
+			if (max_i < 0) {
+				/*DEBUG Flat_MaxProjection**
+#ifdef PP_DEBUG
+				cout << "Flat_MaxProjection: iterCount = " << iterCount << endl;
+#endif // PP_DEBUG /**/
+				return;
+			}
+
+			Vector_Copy(w_max, w);
+			iterCount++;
+			if (iterCount > maxProjectingIter) {
+				*success = false;
+				break;
+			}
+			dist = Distance_PointToPoint(w, w_previous);
+		} while (dist >= eps_zero);
+		/*DEBUG PC_bsf_MapF**
+#ifdef PP_DEBUG
+		cout << "Flat_MaxProjection: iterCount = " << iterCount << endl;
+#endif // PP_DEBUG /**/
+	}
+
 	static inline void JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double eps) {
 		PT_vector_T o; // Oblique projection vector
 		PT_vector_T o_min; // Oblique projection vector with minimum length
@@ -469,6 +554,7 @@ namespace SF {
 		double* z = startPoint;
 		double* d = directionVector;
 		double a_DoT_d;
+		double norm_a_DoT_norm_d;
 		int location_z;
 		double a_DoT_z_MinuS_b;
 		double minLengthSQR = PP_INFINITY;
@@ -481,17 +567,25 @@ namespace SF {
 			location_z = PointLocation_i(z, i, eps, &a_DoT_z_MinuS_b);
 			assert(location_z != PP_DEGENERATE_INEQUALITY);
 
+			a_DoT_d = Vector_DotProduct(PD_A[i], d);
+			norm_a_DoT_norm_d = a_DoT_d / (PD_norm_a[i] * Vector_Norm(d));
+
 			switch (location_z) {
 			case PP_ON_HYPERPLANE:
-				continue;
-			case PP_OUTSIDE_HALFSPACE:
-				continue;
+				if (fabs(norm_a_DoT_norm_d) < eps)
+					continue;
+				if (norm_a_DoT_norm_d < 0)
+					continue;
+				// norm_a_DoT_norm_d > 0
+				Vector_Copy(startPoint, finishPoint);
+				return;
 			case PP_INSIDE_HALFSPACE:
-				a_DoT_d = Vector_DotProduct(PD_A[i], d); // <a,d>
-
-				if (a_DoT_d < PP_EPS_ZERO)   // <a,d> <= 0
+				if (fabs(norm_a_DoT_norm_d) < eps)
+					continue;
+				if (norm_a_DoT_norm_d < 0)
 					continue;
 
+				// norm_a_DoT_norm_d > 0
 				// Oblique projection vector: o = -(<a,z> - b)d/<a, d>
 				Vector_MultiplyByNumber(d, -a_DoT_z_MinuS_b / a_DoT_d, o);
 				lengthSQR_o = Vector_NormSquare(o);
@@ -523,15 +617,15 @@ namespace SF {
 			notIncludingHalfspacesList[mo] = -1;
 	}
 
-	static inline void MakeNeHyperplaneList(PT_vector_T u, int* pointHyperplaneList, int* mneh, double eps) {
+	static inline void MakeNeHyperplaneList(PT_vector_T u, int* neHyperplanes_u, int* mneh_u, double eps) {
 		// List of hyperplanes that are not equations and include point u.
-		*mneh = 0;
+		*mneh_u = 0;
 		for (int i = 0; i < PD_m; i++) {
 			if (PD_isEquation[i])
 				continue;
 			if (PointBelongsHyperplane_i(u, i, eps)) {
-				pointHyperplaneList[*mneh] = i;
-				(*mneh)++;
+				neHyperplanes_u[*mneh_u] = i;
+				(*mneh_u)++;
 			}
 		}
 	}
@@ -595,7 +689,7 @@ namespace SF {
 	}
 
 	static bool MPS___Load_Problem() {
-		const char* mtxFile;
+		const char* mpsFile;
 		FILE* stream;// Input stream
 		char str[80] = { '\0' };
 		char* chr = str;
@@ -645,12 +739,12 @@ namespace SF {
 		MPS_file += PP_MPS_PREFIX;
 		MPS_file += PD_problemName;
 		MPS_file += PP_MPS_EXTENSION;
-		mtxFile = MPS_file.c_str();
-		stream = fopen(mtxFile, "r+b");
+		mpsFile = MPS_file.c_str();
+		stream = fopen(mpsFile, "r+b");
 
 		if (stream == NULL) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "Failure of opening file '" << mtxFile << "'.\n";
+				cout << "Failure of opening file '" << mpsFile << "'.\n";
 			return false;
 		}
 
@@ -1147,7 +1241,7 @@ namespace SF {
 	}
 
 	static inline void MPS_CopyName(char* name_x, char* name_y) {
-		for (int p = 0; p < 9; p++)
+		for (int p = 0; p < PP_MPS_NAME_LENGTH; p++)
 			name_y[p] = name_x[p];
 	}
 
@@ -1155,6 +1249,10 @@ namespace SF {
 		char ch;
 		fpos_t pos;	// Position in the input stream
 
+		fgetpos(stream, &pos);
+		if (getc(stream) == -1) // EOF
+			return;
+		fsetpos(stream, &pos);
 
 		do {
 			fgetpos(stream, &pos);
@@ -1254,7 +1352,7 @@ namespace SF {
 		char ch;
 		fpos_t pos;	// Position in the input stream
 
-		for (int p = 0; p < 9; p++)
+		for (int p = 0; p < PP_MPS_NAME_LENGTH; p++)
 			name[p] = '\0';
 
 		fgetpos(stream, &pos);
@@ -1289,6 +1387,9 @@ namespace SF {
 		float RHS_value;
 		int rowIndex;
 
+		for (int p = 0; p < PP_MPS_NAME_LENGTH; p++)
+			next_RHS_name[p] = '\0';
+
 		for (int p = 0; p < 4; p++) {
 			ch = getc(stream);
 			if (ch != ' ') {
@@ -1300,8 +1401,11 @@ namespace SF {
 
 		int p = 0;
 		fgetpos(stream, &pos);
-		while (getc(stream) == ' ')
+		while (ch == ' ') {
+			fgetpos(stream, &pos);
+			ch = getc(stream);
 			p++;
+		}
 		fsetpos(stream, &pos);
 
 		if (p > 8)
@@ -1416,7 +1520,7 @@ namespace SF {
 	}
 
 	static inline bool MPS_SameNames(PT_MPS_name_T name_x, PT_MPS_name_T name_y) {
-		for (int p = 0; p < 9; p++) {
+		for (int p = 0; p < PP_MPS_NAME_LENGTH; p++) {
 			if (name_x[p] == '\0' && name_y[p] == '\0')
 				return true;
 			if (name_x[p] != name_y[p])
@@ -2039,46 +2143,41 @@ namespace SF {
 
 	static inline void	ObliqueProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T d, PT_vector_T o, double eps, int* exitCode) {
 		// Oblique projecting vector o of point z onto Half-space H_i with respect to vector d
-		double a_DoT_g;	// <a,d>
+		double a_DoT_d;	// <a,d>
+		double norm_a_DoT_norm_d; // <a,d>/(||a||*||d||)
 		double a_DoT_z_MinuS_b;	// <a,z> - b
 		double factor;	// (b - <a,z>) / <a,d>
 
-		if (PD_norm_a[i] < PP_EPS_ZERO) {
-			Vector_Zeroing(o);
-			*exitCode = PP_DEGENERATE_INEQUALITY;
+		Vector_Zeroing(o);
+
+		*exitCode = PointLocation_i(z, i, eps, &a_DoT_z_MinuS_b);
+		a_DoT_d = Vector_DotProduct(PD_A[i], d); // <a,d>
+
+		a_DoT_d = Vector_DotProduct(PD_A[i], d);
+		norm_a_DoT_norm_d = a_DoT_d / (PD_norm_a[i] * Vector_Norm(d));
+
+		switch (*exitCode) {
+		case PP_DEGENERATE_INEQUALITY:
+		case PP_ON_HYPERPLANE:
+		case PP_INSIDE_HALFSPACE:
+			Vector_Copy(z, o);
 			return;
+		case PP_OUTSIDE_HALFSPACE:
+			if (fabs(norm_a_DoT_norm_d) < eps) {
+				*exitCode = PP_PARALLEL;
+				Vector_SetValue(o, PP_INFINITY);
+				return;
+			}
+			if (norm_a_DoT_norm_d > 0) {
+				*exitCode = PP_RECESSIVE;
+				Vector_SetValue(o, -PP_INFINITY);
+				return;
+			}
+		default:
+			assert(false);
 		}
 
-		a_DoT_z_MinuS_b = Vector_DotProduct(PD_A[i], z) - PD_b[i]; // <a,z> - b
-
-		if (fabs(a_DoT_z_MinuS_b) / PD_norm_a[i] < PP_EPS_ZERO) { // |<a,z> - b|/||a|| = 0
-			*exitCode = PP_ON_HYPERPLANE;
-			Vector_Zeroing(o);
-			return;
-		}
-
-		if (a_DoT_z_MinuS_b < 0) { // <a,z> - b < 0
-			*exitCode = PP_INSIDE_HALFSPACE;
-			Vector_Zeroing(o);
-			return;
-		}
-
-		a_DoT_g = Vector_DotProduct(PD_A[i], d); // <a,d>
-
-
-		if (fabs(a_DoT_g) < PP_EPS_ZERO) {
-			*exitCode = PP_PARALLEL;
-			Vector_Zeroing(o);
-			return;
-		}
-
-		if (a_DoT_g >= PP_EPS_ZERO) {
-			*exitCode = PP_RECESSIVE;
-			Vector_Zeroing(o);
-			return;
-		}
-
-		factor = a_DoT_z_MinuS_b / a_DoT_g; // (<a,z> - b) / <a,d>
+		factor = a_DoT_z_MinuS_b / a_DoT_d; // (<a,z> - b) / <a,d>
 
 		// Oblique projection vector: o = -(<a,z> - b)d/<a, d> = -factor * d
 		Vector_MultiplyByNumber(d, -factor, o);
@@ -2092,21 +2191,20 @@ namespace SF {
 		double a_DoT_z_MinuS_b = Vector_DotProduct(PD_A[i], z) - PD_b[i]; // <a,z> - b
 		double distance = fabs(a_DoT_z_MinuS_b) / PD_norm_a[i];
 
-		if (PD_norm_a[i] < PP_EPS_ZERO) {
 			Vector_Zeroing(r);
+
+			if (PD_norm_a[i] < PP_EPS_ZERO) {
 			*exitCode = PP_DEGENERATE_INEQUALITY;
 			return;
 		}
 
 		if (distance < eps) {
-			Vector_Zeroing(r);
 			*exitCode = PP_ON_HYPERPLANE;
 			return;
 		}
 
 		if (!PD_isEquation[i])
 			if (a_DoT_z_MinuS_b < 0) { // <a,z> - b < 0
-				Vector_Zeroing(r);
 				*exitCode = PP_INSIDE_HALFSPACE;
 				return;
 			}
@@ -2117,8 +2215,9 @@ namespace SF {
 	}
 
 	static inline void OrthogonalProjectingVectorOntoHyperplane_i(PT_vector_T x, int i, PT_vector_T p) {
-		assert(Vector_NormSquare(PD_A[i]));
-		Vector_MultiplyByNumber(PD_A[i], -(Vector_DotProduct(PD_A[i], x) - PD_b[i]) / Vector_NormSquare(PD_A[i]), p);
+		double ns = Vector_NormSquare(PD_A[i]);
+		assert(ns >= PP_EPS_ZERO);
+		Vector_MultiplyByNumber(PD_A[i], -(Vector_DotProduct(PD_A[i], x) - PD_b[i]) / ns, p);
 	}
 
 	static inline bool PointBelongsHalfspace_i(PT_vector_T x, int i, double eps) {
@@ -2183,7 +2282,7 @@ namespace SF {
 
 		*a_DoT_x_MinuS_b = Vector_DotProduct(PD_A[i], x) - PD_b[i];
 
-		if (fabs(*a_DoT_x_MinuS_b) / PD_norm_a[i] < PP_EPS_ZERO)// <a,x> = b
+		if (fabs(*a_DoT_x_MinuS_b) / PD_norm_a[i] < eps)// <a,x> = b
 			return PP_ON_HYPERPLANE;
 
 		if (*a_DoT_x_MinuS_b < 0)								// <a,x> < b
@@ -2266,27 +2365,26 @@ namespace SF {
 	}
 
 	static inline void Print_Number_of_edges(PT_vector_T x) {
-		int mneh;
+		int mneh_u;
 		unsigned long long me;
 
-		mneh = 0;
+		mneh_u = 0;
 		for (int i = 0; i < PD_m; i++) {
 			if (PD_isEquation[i])
 				continue;
 			if (PointBelongsHyperplane_i(x, i, PP_EPS_POINT_IN_HALFSPACE))
-				mneh++;
+				mneh_u++;
 		}
 
-		if (mneh == PD_neq)
-			me = (unsigned long long) mneh;
+		if (mneh_u == PD_neq)
+			me = (unsigned long long) mneh_u;
 		else {
-
-			if (mneh > 62) {
-				cout << "Can't calculate binomial coefficient for number of including hyperplanes mneh = "
-					<< mneh << " > 62" << endl;
+			if (mneh_u > 62) {
+				cout << "Warning: Can't calculate binomial coefficient for number of including hyperplanes mneh_u = "
+					<< mneh_u << " > 62" << endl;
 				return;
 			}
-			me = BinomialCoefficient(mneh, PD_neq - 1);
+			me = BinomialCoefficient(mneh_u, PD_neq - 1);
 		}
 		cout << me << endl;
 	}
@@ -2296,43 +2394,96 @@ namespace SF {
 		if (PP_OUTPUT_LIMIT < PD_n) cout << "	...";
 	}
 
-	static inline void PseudoprojectionOnFlat(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps, int maxProjectingIter, PT_vector_T w, int* success) {
-		PT_vector_T r;
-		PT_vector_T w_previous;
-		double distSQR;
-		int iterCount = 0;
-		double eps_distSQR = (eps * eps) / 100;
-
-		Vector_Copy(v, w);
-
-		do {
-			Vector_Zeroing(r);
-			Vector_Copy(w, w_previous);
-
-			for (int i = 0; i < m_flat; i++) {
-				PT_vector_T p;
-				OrthogonalProjectingVectorOntoHyperplane_i(w, flatHyperplanes[i], p);
-				Vector_PlusEquals(r, p);
-			}
-
-			Vector_DivideEquals(r, m_flat);
-			Vector_Round(r, eps);
-			Vector_PlusEquals(w, r);
-
-			distSQR = DistanceSQR_PointToPoint(w, w_previous);
-			iterCount++;
-			if (iterCount > maxProjectingIter) {
-				*success = false;
-				break;
-			}
-		} while (distSQR >= eps_distSQR);
-	}
-
 	static inline double RelativeError(double trueValue, double calculatedValue) {
 		if (fabs(trueValue) >= PP_EPS_ZERO)
 			return fabs(calculatedValue - trueValue) / fabs(trueValue);
 		else
 			return fabs(calculatedValue - trueValue);
+	}
+
+	static inline void TWIDDLE // https://doi.org/10.1145/362384.362502
+	(int* x, int* y, int* z, int* p, bool* done) {
+		int i, j, k;
+		j = 0;
+		*done = false;
+
+		do {
+			j++;
+		} while (p[j] <= 0);
+
+		if (p[j - 1] == 0) {
+			i = j - 1;
+			while (i != 1) {
+				p[i] = -1;
+				i -= 1;
+			}
+			p[j] = 0;
+			p[1] = *x = *z = 1;
+			*y = j;
+			return;
+		}
+
+		if (j > 1)
+			p[j - 1] = 0;
+
+		do {
+			j++;
+		} while (p[j] > 0);
+
+		i = k = j - 1;
+
+		i++;
+		while (p[i] == 0) {
+			p[i] = -1;
+			i++;
+		}
+
+		if (p[i] == -1) {
+			p[i] = *z = p[k];
+			*x = i;
+			*y = k;
+			p[k] = -1;
+			return;
+		}
+
+		if (i == p[0]) {
+			*done = true;
+			return;
+		}
+
+		*z = p[j] = p[i];
+		p[i] = 0;
+		*x = j;
+		*y = i;
+	}
+
+	static inline void TWIDDLE_CodeToSubset(int code, int* a, int* c, int n, int m, int* x, int* y, int* z, int* p, bool* done, int* nextI) {
+		if (*nextI == 0) {
+			for (int k = 0; k < m; k++)
+				c[k] = a[n - m + k];
+			if (code == 0) {
+				(*nextI)++;
+				return;
+			}
+		}
+
+		do {
+			TWIDDLE(x, y, z, p, done);
+			assert(!*done);
+			c[*z - 1] = a[*x - 1];
+			(*nextI)++;
+		} while (*nextI < code);
+	}
+
+	static inline void TWIDDLE_Make_p(int* p, int n, int m) {
+		// p - auxiliary integer array for generating all combinations of m out of n objects.
+		assert(n >= m && m > 0);
+		p[0] = n + 1;
+		p[n + 1] = -2;
+		for (int j = 1; j <= n - m; j++)
+			p[j] = 0;
+		for (int j = n - m + 1; j <= n; j++)
+			p[j] = j - n + m;
 	}
 
 	static inline void Shift(PT_vector_T point, PT_vector_T shiftVector, double factor, PT_vector_T shiftedPoint) {

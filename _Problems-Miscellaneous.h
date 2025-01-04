@@ -36,7 +36,7 @@ This include file is part of Problem-Parameters.h
 #define PP_PROBLEM_NAME	"cubeInHyperplane"
 #define PP_M 4		// Number of rows in *.mtx
 #define PP_N 4		// Number of cols in *.mtx
-#define PP_MAX_OBJ_VALUE 		60000
+#define PP_MAX_OBJ_VALUE 		90000
 //-------------------------------------------------------------------------------
 
 /*============================== simple1FxVar LP problem ========================*

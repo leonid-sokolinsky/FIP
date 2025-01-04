@@ -31,7 +31,7 @@ This include file is part of Problem-Parameters.h
 // Objective function: -652787
 //--------------------------------------------------------------------------
 
-/*============================== afiro LP problem ==========================*
+/*============================== afiro LP problem ==========================*/
 // Number of equations : 8
 // Subspace dimension : 24
 #define PP_PROBLEM_NAME	"afiro"
@@ -168,7 +168,7 @@ This include file is part of Problem-Parameters.h
 // Objective function: 104.8237
 //--------------------------------------------------------------------------
 
-/*============================== sc50a LP problem ==========================*/
+/*============================== sc50a LP problem ==========================*
 // Number of equations: 20
 // Subspace dimension: 28
 #define PP_PROBLEM_NAME		"sc50a"
@@ -188,7 +188,7 @@ This include file is part of Problem-Parameters.h
 
 /*============================== sc50b LP problem ==============================*
 #define PP_PROBLEM_NAME		"sc50b"
-#define PP_M 50	// Number of constraints in mps-file
+#define PP_M 48	// Number of constraints in mps-file
 #define PP_N 48		// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 70	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
@@ -204,7 +204,7 @@ This include file is part of Problem-Parameters.h
 
 /*============================== sc105 LP problem ==============================*
 #define PP_PROBLEM_NAME		"sc105"
-#define PP_M 105	// Number of constraints in mps-file
+#define PP_M 104	// Number of constraints in mps-file
 #define PP_N 103	// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 52.202061211707248062628010857689 // Exact maximum value of objective function
 //--------------------------------------------------------------------------
