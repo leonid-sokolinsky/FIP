@@ -19,8 +19,8 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 		-225494.96316238038228101176621492
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_PROJECTION			PP_EPS_ZERO	// Precision to calculate projection
 //--------------------------------------------------------------------------
 // Elapsed time: 3
 // Number of iterations: 96889
@@ -28,7 +28,7 @@ This include file is part of Problem-Parameters.h
 // Objective function: -652787
 //--------------------------------------------------------------------------
 
-/*============================== afiro LP problem ==========================*/
+/*============================== afiro LP problem ==========================*
 // Number of equations : 8
 // Subspace dimension : 24
 #define PP_PROBLEM_NAME	"afiro"
@@ -37,8 +37,8 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 464.75314285714285714285714285714
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_PROJECTION			PP_EPS_ZERO	// Precision to calculate projection
 //--------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 13237
@@ -55,8 +55,8 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE -33592.4858072
 //---------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_PROJECTION			PP_EPS_ZERO	// Precision to calculate projection
 //---------------------------------------------------------------------
 // Elapsed time: 104
 // Number of iterations: 548860
@@ -72,11 +72,9 @@ This include file is part of Problem-Parameters.h
 #define PP_N 83		// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 30.812149845828220173774356124984	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-//--------------------------------------------------------------------------
-// Zero point is feasible
+#define PP_EPS_ZERO				1E-11			// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO		// Precision for point to be in halfspace
+#define PP_EPS_PROJECTION		PP_EPS_ZERO		// Precision to calculate projection
 //--------------------------------------------------------------------------
 
 /*============================== fit1d LP problem ==========================*
@@ -88,8 +86,8 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 9146.3780924209269467749025024617	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_PROJECTION			PP_EPS_ZERO	// Precision to calculate projection
 //--------------------------------------------------------------------------
 // Zero point is feasible
 //--------------------------------------------------------------------------
@@ -102,8 +100,8 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 896644.82186304572966200464196045	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_PROJECTION			PP_EPS_ZERO	// Precision to calculate projection
 //--------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 143
@@ -111,7 +109,7 @@ This include file is part of Problem-Parameters.h
 // Objective function: 85567.12
 //--------------------------------------------------------------------------
 
-/*============================== kb2 LP problem ============================*
+/*============================== kb2 LP problem ============================*/
 // Number of equations: 16
 // Subspace dimension: 25
 #define PP_PROBLEM_NAME		"kb2"
@@ -119,9 +117,9 @@ This include file is part of Problem-Parameters.h
 #define PP_N 41		// Number of variables in mps-file (after conversion to standard form)
 #define PP_MAX_OBJ_VALUE 1749.9001299062057129526866493726
 //--------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
+#define PP_EPS_ZERO				1E-12			// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE	(PP_EPS_ZERO*100)// Precision for point to be in halfspace
+#define PP_EPS_PROJECTION		PP_EPS_ZERO		// Precision to calculate projection
 //--------------------------------------------------------------------------
 // Zero point is feasible
 //--------------------------------------------------------------------------
@@ -135,8 +133,8 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 266.616 // Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_PROJECTION			PP_EPS_ZERO	// Precision to calculate projection
 //--------------------------------------------------------------------------
 // Elapsed time: 2
 // Number of iterations: 13602
@@ -153,8 +151,8 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 64.575077058564509026860413914575	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_PROJECTION			PP_EPS_ZERO	// Precision to calculate projection
 //----------------------------------------------------------------------------
 // Zero point is feasible
 //----------------------------------------------------------------------------
@@ -166,7 +164,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 70	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9	// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO		// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		1E-7	// Accuracy of belonging to polytope
 //----------------------------------------------------------------------------
 // Zero point is feasible
@@ -179,7 +177,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 52.202061211707248062628010857689 // Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9	// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO		// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		1E-7	// Accuracy of belonging to polytope
 //----------------------------------------------------------------------------
 // Zero point is feasible.
@@ -192,7 +190,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 415.732240741419486545199108738 // Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to polytope
 //----------------------------------------------------------------------------
 // Elapsed time: 1550
