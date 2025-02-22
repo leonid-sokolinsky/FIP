@@ -66,7 +66,6 @@ namespace SF {
 	bool	PointBelongsToHalfspace_i(PT_vector_T point, int i, double eps);
 	bool	PointBelongsToHyperplane_i(PT_vector_T z, int i, double eps_on_hyperplane);
 	bool	PointBelongsToPolytope(PT_vector_T x, double eps_on_hyperplane);
-	void	PointHomothety(PT_vector_T x, PT_vector_T center, double ratio);
 	bool	PointInsideHalfspace_i(PT_vector_T x, int i, double eps_on_hyperplane);
 	bool	PointIsBoundary(PT_vector_T x, double eps_on_hyperplane);
 	bool	PointIsVertex(PT_vector_T x, double eps_on_hyperplane);

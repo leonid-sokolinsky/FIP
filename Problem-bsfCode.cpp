@@ -139,6 +139,13 @@ void PC_bsf_MainArguments(int argc, char* argv[]) {
 void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int* success) {
 	// PF_MAP_LIST_INDEX
 	OrthogonalProjectingVectorOntoHalfspace_i(BSF_sv_parameter.x, mapElem->constraint_i, reduceElem->projectingVector, success);
+	reduceElem->length = Vector_Norm(reduceElem->projectingVector);
+
+	/*DEBUG PC_bsf_MapF**
+	#ifdef PP_DEBUG
+	cout << PF_MAP_LIST_INDEX << ") Hyperplane No. " << mapElem->constraint_i;
+	cout << "\t||r|| = " << reduceElem->length << endl;
+	#endif // PP_DEBUG /**/
 }
 
 void PC_bsf_MapF_1(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T_1* reduceElem, int* success) {
@@ -170,7 +177,10 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	if (PD_meq > 0)
 		cout << "Subspace dimension: " << PD_neq << endl;
 
-	cout << "Number of Workers: " << BSF_sv_numOfWorkers << endl;
+	if (BSF_sv_mpiMaster == 0)
+		cout << "No MPI" << endl;
+	else
+		cout << "Number of Workers: " << BSF_sv_numOfWorkers << endl;
 
 #ifdef PP_BSF_OMP
 #ifdef PP_BSF_NUM_THREADS
@@ -187,6 +197,12 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 #else
 	cout << "Map List is not Fragmented" << endl;
 #endif
+
+#ifdef PP_MAXPROJECTION
+	cout << "Pseudoprojection method: Max" << endl;
+#else
+	cout << "Pseudoprojection method: BIP" << endl;
+#endif // !PP_MAXPROJECTION
 
 	cout << "PP_EPS_ZERO\t\t" << PP_EPS_ZERO << endl;
 	cout << "PP_EPS_PROJECTION\t" << PP_EPS_PROJECTION << endl;
@@ -239,6 +255,7 @@ void PC_bsf_ProblemOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCount
 }
 
 void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T* parameter, int* nextJob, bool* exit) {
+	double length; // Length of projecting vbector
 
 	PD_iterNo++;
 
@@ -261,7 +278,12 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 	};
 #endif // PP_MAX_ITER_COUNT
 
+#ifdef PP_MAXPROJECTION
+	length = reduceResult->length;
+#else
 	Vector_DivideEquals(reduceResult->projectingVector, (double)(reduceCounter));
+	length = Vector_Norm(reduceResult->projectingVector);
+#endif // PP_MAXPROJECTION
 
 #ifdef PP_DEBUG
 	PT_vector_T x_prev;
@@ -273,7 +295,7 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 #ifdef PP_DEBUG
 	double dist = Distance_PointToPoint(parameter->x, x_prev);
 	if (dist > 0)
-		if (dist < DBL_EPSILON) {
+		if (dist < DBL_EPSILON * 10) {
 			cout << "PC_bsf_ProcessResults error: The distance between the approximations is less than the machine epsilon! You should increase PP_EPS_PROJECTION." << endl;
 			*exit = true;
 			return;
@@ -288,8 +310,6 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 	cout << "x = "; Print_Vector(parameter->x); cout << endl;
 	cout << "x on hyperplanes: "; Print_HyperplanesIncludingPoint(parameter->x, PP_EPS_ON_HYPERPLANE); cout << endl;
 #endif // PP_DEBUG /**/
-
-	double length = Vector_Norm(reduceResult->projectingVector);
 
 	if (length < PP_EPS_PROJECTION) {
 		*exit = true;
@@ -327,7 +347,22 @@ void PC_bsf_ProcessResults_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCoun
 }
 
 void PC_bsf_ReduceF(PT_bsf_reduceElem_T* x, PT_bsf_reduceElem_T* y, PT_bsf_reduceElem_T* z) { // z = x + y
-	Vector_Addition(x->projectingVector, y->projectingVector, z->projectingVector);
+	if (x->length > y->length) {
+		z->length = x->length;
+#ifdef PP_MAXPROJECTION
+		Vector_Copy(x->projectingVector, z->projectingVector);
+#else
+		Vector_Addition(x->projectingVector, y->projectingVector, z->projectingVector);
+#endif // !PP_MAXPROJECTION
+	}
+	else {
+		z->length = y->length;
+#ifdef PP_MAXPROJECTION
+		Vector_Copy(y->projectingVector, z->projectingVector);
+#else
+		Vector_Addition(x->projectingVector, y->projectingVector, z->projectingVector);
+#endif // !PP_MAXPROJECTION
+	}
 }
 
 void PC_bsf_ReduceF_1(PT_bsf_reduceElem_T_1* x, PT_bsf_reduceElem_T_1* y, PT_bsf_reduceElem_T_1* z) {

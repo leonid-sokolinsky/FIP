@@ -5,17 +5,17 @@ Module: _Problems-Miscellaneous.h (Miscellaneous LP problems)
 Prefix: PP
 Author: Leonid B. Sokolinsky
 This include file is part of Problem-Parameters.h
-==============================================================================*/
+================================================================================*/
 #pragma once
 
 /*
-//=========================== problem Parameters ========================
+//=========================== problem Parameters ===============================
 #define PP_EPS_ZERO					1E-12		// Accuracy for comparison with zero
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_ZERO*10)// Precision for point to be in halfspace
 #define PP_EPS_PROJECTION		PP_EPS_ZERO		// Accuracy of belonging to hyperplane
 */
 
-/*============================== nguyen5 LP problem ============================*
+/*============================== nguyen5 LP problem ============================*/
 #define PP_PROBLEM_NAME	"nguyen5"
 #define PP_MPS_FORMAT
 #define PP_M 4		// Number of constrains
@@ -25,12 +25,14 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-15					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 1096
-// Objective function: 15.6800000000038615155518
-// Distance to polytope: 8.79777233823492757763093e-14
-// z on hyperplanes: {3, 4, 5, 6, 8}
+// Number of iterations: 75
+// Objective function: 5.08235294117632818711172
+// Distance to polytope: 2.35117716511801969942853e-15
+// z on hyperplanes: {2, 4, 5, 7, 8}
 // Number of including inequality hyperplanes: 5
 //------------------------------------------------------------------------------
 
@@ -49,11 +51,13 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-15					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 90
-// Objective function: 60000.0000000000072759576
-// Distance to polytope: 2.8421709430404007434845e-14
+// Number of iterations: 4
+// Objective function: 60000
+// Distance to polytope: 0
 // z on hyperplanes: {0, 1, 2}
 // Number of including inequality hyperplanes: 3
 //------------------------------------------------------------------------------
@@ -106,13 +110,15 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-15					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 7
-// Objective function: 42747.3958333333284826949
+// Number of iterations: 5
+// Objective function: 10000
 // Distance to polytope: 0
-// z on hyperplanes: {2}
-// Number of including inequality hyperplanes: 1
+// z on hyperplanes: {2, 4, 5}
+// Number of including inequality hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple1.1 LP problem ===========================*
@@ -210,13 +216,15 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 103
-// Objective function: 50000.0000000000145519152
-// Distance to polytope: 1.7053025658242404460907e-13
-// z on hyperplanes: {0, 1, 2, 3}
-// Number of including inequality hyperplanes: 4
+// Number of iterations: 5
+// Objective function: 45000
+// Distance to polytope: 0
+// z on hyperplanes: {1, 2}
+// Number of including inequality hyperplanes: 2
 //------------------------------------------------------------------------------
 
 /*============================== simple_lcv LP problem ==========================*
@@ -228,13 +236,15 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 105
-// Objective function: 50000.2000000000116415322
-// Distance to polytope: 1.7053025658242404460907e-13
-// z on hyperplanes: {0, 1, 2, 3}
-// Number of including inequality hyperplanes: 4
+// Number of iterations: 5
+// Objective function: 47777.9777777777781011537
+// Distance to polytope: 0
+// z on hyperplanes: {0, 2}
+// Number of including inequality hyperplanes: 2
 //------------------------------------------------------------------------------
 
 /*============================== simple_lcv_neg LP problem ======================*
@@ -264,11 +274,13 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-15					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 64
-// Objective function: 1100.00000000000045474735
-// Distance to polytope: 7.67525070697122545030216e-15
+// Number of iterations: 18
+// Objective function: 1100
+// Distance to polytope: 0
 // z on hyperplanes: {0, 3, 5}
 // Number of including inequality hyperplanes: 3
 //------------------------------------------------------------------------------
@@ -318,16 +330,18 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 61
-// Objective function: 744.435835541404799187148
-// Distance to polytope: 9.42673524236995356414932e-14
-// z on hyperplanes: {11, 15}
-// Number of including inequality hyperplanes: 2
+// Number of iterations: 3
+// Objective function: 783.708298413821353278763
+// Distance to polytope: 0
+// z on hyperplanes: {3}
+// Number of including inequality hyperplanes: 1
 //------------------------------------------------------------------------------
 
-/*============================== rnd5-100 LP problem ===========================*/
+/*============================== rnd5-100 LP problem ===========================*
 #define PP_PROBLEM_NAME	"rnd5-100"
 #define PP_M 105		// Number of rows in *.mtx
 #define PP_N 110		// Number of cols in *.mtx
@@ -336,13 +350,15 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-15					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 65
-// Objective function: 1756.47580208641329591046
+// Number of iterations: 4
+// Objective function: 1436.47875368017207620142
 // Distance to polytope: 0
-// z on hyperplanes: {73, 109}
-// Number of including inequality hyperplanes: 2
+// z on hyperplanes: {88}
+// Number of including inequality hyperplanes: 1
 //------------------------------------------------------------------------------
 
 /*==============================================================================*/
