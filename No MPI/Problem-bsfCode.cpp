@@ -139,7 +139,8 @@ void PC_bsf_MainArguments(int argc, char* argv[]) {
 void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int* success) {
 	// PF_MAP_LIST_INDEX
 	OrthogonalProjectingVectorOntoHalfspace_i(BSF_sv_parameter.x, mapElem->constraint_i, reduceElem->projectingVector, success);
-	reduceElem->length = Vector_Norm(reduceElem->projectingVector);
+	if (*success)
+		reduceElem->length = Vector_Norm(reduceElem->projectingVector);
 
 	/*DEBUG PC_bsf_MapF**
 	#ifdef PP_DEBUG
@@ -2154,7 +2155,7 @@ namespace SF {
 		double a_DoT_z_MinuS_b = Vector_DotProduct(PD_A[i], z) - PD_b[i]; // <a,z> - b
 
 		if (!PD_isEquation[i])
-			if (a_DoT_z_MinuS_b <= 0) { // <a,z> - b < 0
+			if (a_DoT_z_MinuS_b <= 0) { // <a,z> - b <= 0
 				*success = false;
 				return;
 			}

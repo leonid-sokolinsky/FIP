@@ -70,7 +70,6 @@ namespace SF {
 	bool	PointIsBoundary(PT_vector_T x, double eps_on_hyperplane);
 	bool	PointIsVertex(PT_vector_T x, double eps_on_hyperplane);
 	int		PointLocation_i(PT_vector_T x, int i, double eps, double* a_DoT_x_MinuS_b);
-	void	PolytopeHomothety(PT_vector_T center, double ratio);
 	void	Print_Constraints();
 	void	Print_HalfspacesIncludingPoint(PT_vector_T x, double eps_on_hyperplane);
 	void	Print_HalfspacesOutOfPoint(PT_vector_T x, double eps_on_hyperplane);
