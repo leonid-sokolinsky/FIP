@@ -15,7 +15,7 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_PROJECTION		PP_EPS_ZERO		// Accuracy of belonging to hyperplane
 */
 
-/*============================== nguyen5 LP problem ============================*/
+/*============================== nguyen5 LP problem ============================*
 #define PP_PROBLEM_NAME	"nguyen5"
 #define PP_MPS_FORMAT
 #define PP_M 4		// Number of constrains
@@ -275,7 +275,7 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 18
@@ -294,16 +294,18 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-15					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 106
-// Objective function: 113.99999999999951683094
-// Distance to polytope: 1.27162277778984453168361e-14
+// Number of iterations: 27
+// Objective function: 114.000000000000028421709
+// Distance to polytope: 2.82582839508854322843893e-15
 // z on hyperplanes: {0, 3, 5, 6}
 // Number of including inequality hyperplanes: 4
 //------------------------------------------------------------------------------
 
-/*============================== cone3-0 LP problem =============================*
+/*============================== cone3-0 LP problem =============================*/
 #define PP_PROBLEM_NAME	"cone3-0"
 #define PP_M 11		// Number of rows in *.mtx
 #define PP_N 14		// Number of cols in *.mtx

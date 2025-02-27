@@ -11,6 +11,7 @@ This source code has been produced with using BSF-skeleton
 namespace SF {
 	unsigned long long BinomialCoefficient(int n, int k);
 	void	Bitscale_Create(bool* bitscale, int m, int* hyperplanes, int mh);
+	bool	CheckEpsilons(double eps_zero, double eps_projection, double eps_on_hyperplane);
 	double	Distance_PointToHalfspace_i(PT_vector_T x, int i);
 	double	Distance_PointToHyperplane_i(PT_vector_T x, int i);
 	double	Distance_PointToPoint(PT_vector_T x, PT_vector_T y);

@@ -26,10 +26,10 @@ void PC_bsf_Init(bool* success) {
 	PD_m = 0;
 	PD_n = 0;
 
-	if (!EpsilonsAreOK(PP_EPS_ZERO, PP_EPS_PROJECTION, PP_EPS_ON_HYPERPLANE)) {
+	if (!CheckEpsilons(PP_EPS_ZERO, PP_EPS_PROJECTION, PP_EPS_ON_HYPERPLANE)) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 			cout << "PC_bsf_Init error: The following condition must be satisfied:\n"
-			<< "PP_EPS_ON_HYPERPLANE >  PP_EPS_PROJECTION > PP_EPS_ZERO > DBL_EPSILON = "
+			<< "PP_EPS_ON_HYPERPLANE >=  PP_EPS_PROJECTION >= PP_EPS_ZERO >= DBL_EPSILON = "
 			<< DBL_EPSILON << endl;
 		*success = false;
 		return;
@@ -421,6 +421,10 @@ namespace SF {
 			bitscale[i] = false;
 		for (int ih = 0; ih < mh; ih++)
 			bitscale[hyperplanes[ih]] = true;
+	}
+
+	static inline bool CheckEpsilons(double eps_zero, double eps_projection, double eps_on_hyperplane) {
+		return (eps_zero >= DBL_EPSILON && eps_projection >= eps_zero && eps_on_hyperplane >= eps_projection);
 	}
 
 	static inline double Distance_PointToHalfspace_i(PT_vector_T x, int i) {
