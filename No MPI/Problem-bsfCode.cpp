@@ -103,11 +103,12 @@ void PC_bsf_IterOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_
 	cout << "# " << BSF_sv_iterCounter << "\t Time " << round(elapsedTime);
 	//cout << "\tx ="; Print_Vector(parameter.x);
 	cout << "\tF(t) = " << setprecision(24) << ObjF(parameter.x) << "\tDistance: " << Distance_PointToPolytope(parameter.x)
-		<< setprecision(PP_SETW / 2) << endl;
+		<< setprecision(PP_SETW / 2);
 	#ifdef PP_SAVE_ITER_IN_X0
 	if (MTX_SavePoint(parameter.x, PP_MTX_POSTFIX_X0))
-		cout << ". x is saved into x0." << endl;
+		cout << ". x is saved into x0.";
 	#endif // PP_SAVE_ITER_IN_X0
+	cout << endl;
 }
 
 void PC_bsf_IterOutput_1(PT_bsf_reduceElem_T_1* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter,
@@ -507,6 +508,14 @@ namespace SF {
 			}
 
 			length_r = Vector_Norm(r);
+
+			/*DEBUG Flat_BipProjection**
+			#ifdef PP_DEBUG
+			if (iterCount % PP_PROJECTION_COUNT == 0)
+				//if (BSF_sv_mpiRank == 0)
+					cout << "Worker " << BSF_sv_mpiRank << ": \t Length of r = " << length_r << endl;
+			#endif // PP_DEBUG /**/
+
 		} while (length_r >= eps_projection);
 
 		/*DEBUG Flat_BipProjection**
@@ -543,6 +552,14 @@ namespace SF {
 				*success = -2;
 				break;
 			}
+
+			/*DEBUG Flat_MaxProjection**
+			#ifdef PP_DEBUG
+			if (iterCount % PP_PROJECTION_COUNT == 0)
+				//if (BSF_sv_mpiRank == 0)
+					cout << "Worker " << BSF_sv_mpiRank << ": \t max_length = " << max_length << endl;
+			#endif // PP_DEBUG /**/
+
 		} while (max_length >= eps_projection);
 
 		/*DEBUG Flat_MaxProjection**

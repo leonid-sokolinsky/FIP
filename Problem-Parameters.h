@@ -29,11 +29,11 @@ This source code has been produced with using BSF-skeleton
 
 /*------------------------------------------------------------------------------*/
 
-#define PP_METHOD_NAME "BIP (no MPI)"
+#define PP_METHOD_NAME "BIP (MPI)"
 
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_DEBUG
-#define PP_MATRIX_OUTPUT
+//#define PP_MATRIX_OUTPUT
 //#define PP_SAVE_ITER_IN_X0
 //#define PP_SAVE_RESULT
 
@@ -42,8 +42,8 @@ This source code has been produced with using BSF-skeleton
 
 #define PP_MAX_ITER_COUNT	10000000000		// Maximal count of iterations
 //-------------------------- Input/Outpoot Parameters ---------------------------
-#define PP_OUTPUT_LIMIT	8	// Number of Elements to output
-#define PP_SETW 14
+#define PP_OUTPUT_LIMIT	4 // Number of Elements to output
+#define PP_SETW 24
 //------------------------- Matrix format ----------------
 #define PP_INFINITY			1E+308		// Highest bound in *_hi.mtx
 #define PP_MTX_PREFIX		"lp_"
