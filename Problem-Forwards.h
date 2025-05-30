@@ -11,15 +11,15 @@ This source code has been produced with using BSF-skeleton
 namespace SF {
 	unsigned long long BinomialCoefficient(int n, int k);
 	void	Bitscale_Create(bool* bitscale, int m, int* hyperplanes, int mh);
+	bool	CheckEpsilons(double eps_zero, double eps_projection, double eps_on_hyperplane);
 	double	Distance_PointToHalfspace_i(PT_vector_T x, int i);
 	double	Distance_PointToHyperplane_i(PT_vector_T x, int i);
 	double	Distance_PointToPoint(PT_vector_T x, PT_vector_T y);
 	double	Distance_PointToPolytope(PT_vector_T x);
 	double	DistanceSQR_PointToPoint(PT_vector_T x, PT_vector_T y);
-	bool	CheckEpsilons(double eps_zero, double eps_projection, double eps_on_hyperplane);
-	void	Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success);
-	void	Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success);
-	void	JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T direcionVector, PT_vector_T finishPoint, double eps_on_hyperplane, double eps_zero, bool* parallelHPlanes, int* success);
+	void	Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* exitCode);
+	void	Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* exitCode);
+	void	JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T direcionVector, PT_vector_T finishPoint, double eps_jump_vector_len, double eps_on_hyperplane, double eps_zero, bool* parallelHPlanes, int* exitCode);
 	void	MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a);
 	void	MakeListOfNotIncludingHalfspaces(PT_vector_T x, int* notIncludingHalfspacesList, double eps);
 	void	MakeNeHyperplaneList(PT_vector_T u, int* neHyperplanes_u, int* mneh_u, double eps);
@@ -59,9 +59,7 @@ namespace SF {
 	bool	MTX_SavePoint(PT_vector_T x, string postfix);
 	void	MTX_SkipComments(FILE* stream);
 	int		Number_IncludingNeHyperplanes(PT_vector_T x, double eps_on_hyperplane);
-	int		Number_of_Edges(PT_vector_T x, double eps_on_hyperplane, bool* success);
 	double	ObjF(PT_vector_T x);
-	void	OrthogonalProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T r, int* success);
 	void	OrthogonalProjectingVectorOntoHyperplane_i(PT_vector_T x, int i, PT_vector_T p);
 	bool	PointBelongsToFlat(PT_vector_T x, int* hyperplaneList, int hyperplaneCount, double eps_on_hyperplane);
 	bool	PointBelongsToHalfspace_i(PT_vector_T point, int i, double eps_on_hyperplane);
@@ -80,9 +78,10 @@ namespace SF {
 	void	Shift(PT_vector_T point, PT_vector_T shiftVector, double factor, PT_vector_T shiftedPoint);
 	void	Tuning_Eps_PointBelongsToFlat(PT_vector_T x, int* hyperplaneList, int hyperplaneCount, double* eps);
 	void	Tuning_Eps_PointBelongsToPolytope(PT_vector_T x, double* eps);
-	void	TWIDDLE(int* x, int* y, int* z, int* p, bool* done);
-	void	TWIDDLE_CodeToSubset(int code, int* a, int* c, int n, int m, int* x, int* y, int* z, int* p, bool* done, int* nextI);
+	int		TWIDDLE__BinomialCoefficient(int n, int k, int* p);
+	void	TWIDDLE__CodeToSubset(int code, int* a, int* c, int n, int m, int* p, bool* done);
 	void	TWIDDLE_Make_p(int* p, int n, int m);
+	void	TWIDDLE_Run(int* x, int* y, int* z, int* p, bool* done);
 	void	Vector_Addition(PT_vector_T x, PT_vector_T y, PT_vector_T z);
 	void	Vector_Copy(PT_vector_T x, PT_vector_T y);
 	void	Vector_DivideByNumber(PT_vector_T x, double r, PT_vector_T y);
@@ -97,7 +96,8 @@ namespace SF {
 	double	Vector_Norm(PT_vector_T x);
 	double	Vector_NormSquare(PT_vector_T x);
 	void	Vector_PlusEquals(PT_vector_T equalVector, PT_vector_T plusVector);
-	void	Vector_Round(PT_vector_T x, double eps);
+		void	Vector_Random(PT_vector_T x, int seed);
+void	Vector_Round(PT_vector_T x, double eps);
 	void	Vector_SetValue(PT_vector_T x, double v);
 	void	Vector_Subtraction(PT_vector_T x, PT_vector_T y, PT_vector_T z);
 	void	Vector_Zeroing(PT_vector_T x);
@@ -107,3 +107,4 @@ namespace SF {
 #define PF_MAX(x,y) (x>y?x:y)
 #define PF_MAP_LIST_INDEX (BSF_sv_addressOffset + BSF_sv_numberInSublist)
 #define PF_DBL_EPSILON 2.222E-16 // Machine epsilon
+#define PF_INT_MAX 2147483647 // Maximum value for a variable of type int

@@ -62,9 +62,9 @@ This include file is part of Problem-Parameters.h
 // Number of including inequality hyperplanes: 3
 //------------------------------------------------------------------------------
 
-/*============================== cubeInHyperplane LP problem ===================*
+/*============================== cubeAndHyperplane LP problem ===================*/
 #define PP_MPS_FORMAT
-#define PP_PROBLEM_NAME	"cubeInHyperplane"
+#define PP_PROBLEM_NAME	"cubeAndHyperplane"
 #define PP_M 4		// Number of rows in *.mtx
 #define PP_N 4		// Number of cols in *.mtx
 #define PP_MAX_OBJ_VALUE 		90000
@@ -305,7 +305,7 @@ This include file is part of Problem-Parameters.h
 // Number of including inequality hyperplanes: 4
 //------------------------------------------------------------------------------
 
-/*============================== cone3-0 LP problem =============================*/
+/*============================== cone3-0 LP problem =============================*
 #define PP_PROBLEM_NAME	"cone3-0"
 #define PP_M 11		// Number of rows in *.mtx
 #define PP_N 14		// Number of cols in *.mtx

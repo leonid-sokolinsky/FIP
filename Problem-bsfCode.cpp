@@ -138,10 +138,19 @@ void PC_bsf_MainArguments(int argc, char* argv[]) {
 }
 
 void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int* success) {
-	// PF_MAP_LIST_INDEX
-	OrthogonalProjectingVectorOntoHalfspace_i(BSF_sv_parameter.x, mapElem->constraint_i, reduceElem->projectingVector, success);
-	if (*success)
-		reduceElem->length = Vector_Norm(reduceElem->projectingVector);
+	if (Distance_PointToHyperplane_i(BSF_sv_parameter.x, mapElem->constraint_i) <= PP_EPS_ON_HYPERPLANE) {
+		*success = false;
+		return;
+	}
+
+	if (!PD_isEquation[mapElem->constraint_i])
+		if (Vector_DotProduct(PD_A[mapElem->constraint_i], BSF_sv_parameter.x) - PD_b[mapElem->constraint_i] < 0) { // <a,z> - b <= 0
+			*success = false;
+			return;
+		}
+
+	OrthogonalProjectingVectorOntoHyperplane_i(BSF_sv_parameter.x, mapElem->constraint_i, reduceElem->projectingVector);
+	reduceElem->length = Vector_Norm(reduceElem->projectingVector);
 
 	/*DEBUG PC_bsf_MapF**
 	#ifdef PP_DEBUG
@@ -168,7 +177,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 
 	#ifdef PP_MPS_FORMAT
 	cout << "Input format: MPS" << endl;
-	cout << "m = " << PD_m << "\tn = " << PD_n << " (after conversion into standard form)" << endl;
+	cout << "m = " << PD_m << "\tn = " << PD_n << endl;
 	#else
 	cout << "Input format: MTX (with elimination of free variables)" << endl;
 	cout << "Before elimination: m =\t" << PP_M << "\tn = " << PP_N << endl;
@@ -209,16 +218,21 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "PP_EPS_ZERO\t\t" << PP_EPS_ZERO << endl;
 	cout << "PP_EPS_PROJECTION\t" << PP_EPS_PROJECTION << endl;
 	cout << "PP_EPS_ON_HYPERPLANE\t" << PP_EPS_ON_HYPERPLANE << endl;
+
 	cout << "--------------- Data ---------------" << endl;
+
 	#ifdef PP_MATRIX_OUTPUT
 	cout << "------- Matrix PD_A & Column PD_b -------" << endl;
 	Print_Constraints();
-	#endif // PP_MATRIX_OUTPUT
-	cout << "Obj Function:\t";
+	cout << "c  = \t";
 	Print_Vector(PD_c);
 	cout << endl;
-	cout << "x0 =\t\t";
-	Print_Vector(PD_x); cout << "\tF(x) = " << setw(PP_SETW) << ObjF(PD_x) << endl;
+	cout << "x0 =\t";
+	Print_Vector(PD_x);
+	cout << endl;
+	#endif // PP_MATRIX_OUTPUT
+
+	cout << "F(x) = "<< ObjF(PD_x) << endl;
 
 	#ifdef PP_DEBUG
 	cout << "x0 on hyperplanes: "; Print_HyperplanesIncludingPoint(PD_x, PP_EPS_ON_HYPERPLANE);
@@ -238,7 +252,14 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	cout << "// Number of including inequality hyperplanes: " << Number_IncludingNeHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
 	cout << "================================================" << endl;
 
-	#ifdef PP_SAVE_RESULT
+#ifdef PP_MATRIX_OUTPUT
+	cout << "z0 =\t";
+	//cout << "z0 = " << setw(PP_SETW/2);
+	Print_Vector(parameter.x);
+#endif // PP_MATRIX_OUTPUT
+
+
+#ifdef PP_SAVE_RESULT
 	if (MTX_SavePoint(parameter.x, PP_MTX_POSTFIX_Z0))
 		cout << "\nBoundary point is saved into the file *.z0" << endl;
 	#endif // PP_SAVE_RESULT
@@ -429,12 +450,12 @@ namespace SF {
 	}
 
 	static inline double Distance_PointToHalfspace_i(PT_vector_T x, int i) {
-		double a_DoT_z_MinuS_b = Vector_DotProduct(PD_A[i], x) - PD_b[i];
+		double a_DoT_x_MinuS_b = Vector_DotProduct(PD_A[i], x) - PD_b[i];
 
-		if (a_DoT_z_MinuS_b < 0) // Point belongs to halfspace
+		if (a_DoT_x_MinuS_b < 0) // Point belongs to halfspace
 			return 0;
 
-		return a_DoT_z_MinuS_b / PD_norm_a[i];
+		return a_DoT_x_MinuS_b / PD_norm_a[i];
 	}
 
 	static inline double Distance_PointToHyperplane_i(PT_vector_T x, int i) {
@@ -468,14 +489,14 @@ namespace SF {
 		return Vector_NormSquare(z);
 	}
 
-	static inline void Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success) {
+	static inline void Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* exitCode) {
 		PT_vector_T p;
 		PT_vector_T r;
 		int iterCount = 0;
 		double length_r;
 
 		Vector_Copy(v, w);
-		*success = true;
+		*exitCode = 1;
 
 		do {
 			Vector_Zeroing(r);
@@ -496,14 +517,14 @@ namespace SF {
 			#ifdef PP_DEBUG
 			double dist = Distance_PointToPoint(w, w_prev);
 			if (dist < PF_DBL_EPSILON * 10) { // Significand bit depth is exceeded!
-				*success = -1;
+				*exitCode = -1;
 				return;
 			}
 			#endif // PP_DEBUG
 
 			iterCount++;
 			if (iterCount > maxProjectingIter) {
-				*success = -2;
+				*exitCode = -2;
 				break;
 			}
 
@@ -524,14 +545,14 @@ namespace SF {
 		#endif // PP_DEBUG /**/
 	}
 
-	static inline void Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success) {
+	static inline void Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* exitCode) {
 		PT_vector_T p;
 		PT_vector_T p_max;
 		double max_length;
 		int iterCount = 0;
 
 		Vector_Copy(v, w);
-		*success = true;
+		*exitCode = 1;
 
 		do {
 			max_length = 0;
@@ -549,7 +570,7 @@ namespace SF {
 
 			iterCount++;
 			if (iterCount > maxProjectingIter) {
-				*success = -2;
+				*exitCode = -2;
 				break;
 			}
 
@@ -568,7 +589,7 @@ namespace SF {
 		#endif // PP_DEBUG /**/
 	}
 
-	static inline void JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T direcionVector, PT_vector_T finishPoint, double eps_on_hyperplane, double eps_zero, bool* parallelHPlanes, int* success) {
+	static inline void JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T jumpVector, PT_vector_T finishPoint, double eps_jump_vector_len, double eps_on_hyperplane, double eps_zero, bool* parallelHPlanes, int* exitCode) {
 		PT_vector_T o;		// Oblique projection vector
 		PT_vector_T o_min;	// Oblique projection vector with minimum length
 		double length_o;
@@ -577,11 +598,11 @@ namespace SF {
 		double norm_a_DoT_norm_d;
 		int location_z;
 		double a_DoT_z_MinuS_b;
-		double* d = direcionVector;		// Direction vector
+		double* d = jumpVector;		// Direction vector
 		double* z = startPoint;
 		double minLength_o = PP_INFINITY;
 
-		*success = true;
+		*exitCode = 1;
 
 		/*DEBUG JumpingOnPolytope**
 		#ifdef PP_DEBUG
@@ -589,13 +610,13 @@ namespace SF {
 		#endif // PP_DEBUG /**/
 
 		norm_d = Vector_Norm(d);
-		if (norm_d < eps_zero) {
+		if (norm_d < eps_jump_vector_len) {
 			/*DEBUG JumpingOnPolytope**
 			#ifdef PP_DEBUG
-			cout << "Worker " << BSF_sv_mpiRank << ": JumpingOnPolytope: norm_d < eps_zero => return " << endl;
+			cout << "Worker " << BSF_sv_mpiRank << ": JumpingOnPolytope: norm_d < eps_jump_vector_len => return" << endl;
 			#endif // PP_DEBUG /**/
 			Vector_Copy(startPoint, finishPoint);
-			*success = false;
+			*exitCode = -1; // Tiny length of direction vector
 			return;
 		}
 
@@ -628,7 +649,7 @@ namespace SF {
 						<< ") \tStart point belong to hyperplane, finish point is outside half-space. => return" << endl;
 					#endif // PP_DEBUG /**/
 					Vector_Copy(startPoint, finishPoint);
-					*success = false;
+					*exitCode = -2; // Start point belong to hyperplane, finish point is outside half-space
 					return;
 				}
 
@@ -1248,7 +1269,7 @@ namespace SF {
 						cout << "MPS_AddObjectiveFunction error: Coefficient redefinition of the objective function for " << column[i_col].varName << "." << endl;
 					return false;
 				}
-				#ifdef MPS_MIN_OF_OBJECTIVE_FUNCTION
+				#ifdef PP_OPT_MIN
 				PD_c[column[i_col].j] = column[i_col].value;
 				#else
 				PD_c[column[i_col].j] = -column[i_col].value;
@@ -1454,12 +1475,6 @@ namespace SF {
 			return false;
 		}
 
-		if (row[rowIndex].type == 'N') {
-			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "MPS_ReadRHS_line: Invalid row type 'N'." << endl;
-			return false;
-		}
-
 		MPS_SkipSpaces(stream);
 
 		if (fscanf(stream, "%lf", &RHS_value) < 1) {
@@ -1468,6 +1483,14 @@ namespace SF {
 			return false;
 		}
 		row[rowIndex].RHS_value = RHS_value;
+
+		if (row[rowIndex].type == 'N')
+			if (RHS_value != 0)
+			{
+				if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+					cout << "MPS_ReadRHS_line warning: RHS value for row of type 'N' is not equal to 0." << endl;
+				return false;
+			}
 
 		MPS_SkipSpaces(stream);
 
@@ -2147,49 +2170,11 @@ namespace SF {
 		return number;
 	}
 
-	static inline int Number_of_Edges(PT_vector_T x, double eps_on_hyperplane, bool* success) {
-		int mne;
-		unsigned long long ull_mne;
-
-		*success = true;
-		mne = 0;
-		for (int i = 0; i < PD_m; i++) {
-			if (PD_isEquation[i])
-				continue;
-			if (PointBelongsToHyperplane_i(x, i, eps_on_hyperplane))
-				mne++;
-		}
-
-		if (mne == PD_neq)
-			ull_mne = (unsigned long long) mne;
-		else {
-			if (mne > 62)
-				*success = false;
-			ull_mne = BinomialCoefficient(mne, PD_neq - 1);
-		}
-		return (int)ull_mne;
-	}
-
 	static inline double ObjF(PT_vector_T x) {
 		double s = 0;
 		for (int j = 0; j < PD_n; j++)
 			s += PD_c[j] * x[j];
 		return s;
-	}
-
-	static inline void OrthogonalProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T r, int* success) {
-		double factor;
-		double a_DoT_z_MinuS_b = Vector_DotProduct(PD_A[i], z) - PD_b[i]; // <a,z> - b
-
-		if (!PD_isEquation[i])
-			if (a_DoT_z_MinuS_b <= 0) { // <a,z> - b <= 0
-				*success = false;
-				return;
-			}
-
-		factor = -a_DoT_z_MinuS_b / (PD_norm_a[i] * PD_norm_a[i]); // (b - <z,a>) / ||a||^2
-		Vector_MultiplyByNumber(PD_A[i], factor, r); // r = a(b - <z,a>) / ||a||^2
-		*success = true;
 	}
 
 	static inline void OrthogonalProjectingVectorOntoHyperplane_i(PT_vector_T x, int i, PT_vector_T p) {
@@ -2207,6 +2192,14 @@ namespace SF {
 	static inline bool PointBelongsToHalfspace_i(PT_vector_T x, int i, double eps_on_hyperplane) {
 		double a_DoT_x_MinuS_b = Vector_DotProduct(PD_A[i], x) - PD_b[i];
 		double distanceToHyperplane = fabs(a_DoT_x_MinuS_b) / PD_norm_a[i];
+
+		#ifdef PP_DEBUG
+		if (distanceToHyperplane > eps_on_hyperplane && distanceToHyperplane < eps_on_hyperplane * 10) {
+			cout << "Distance from testing point is less than " << eps_on_hyperplane * 10 << ", but greater than " << eps_on_hyperplane << "!" << endl;
+			//system("pause");
+		}
+		#endif // PP_DEBUG /**/
+
 		if (distanceToHyperplane < eps_on_hyperplane)
 			return true;
 		if (PD_isEquation[i])
@@ -2219,13 +2212,12 @@ namespace SF {
 	static inline bool PointBelongsToHyperplane_i(PT_vector_T x, int i, double eps_on_hyperplane) {
 		double dist = Distance_PointToHyperplane_i(x, i);
 
-		/*DEBUG PointBelongsToHyperplane_i**
 #ifdef PP_DEBUG
 		if (dist > eps_on_hyperplane && dist < eps_on_hyperplane * 10) {
-			cout << "Distance from testing point is less than " << PD_eps_on_hyperplane*10 << ", but greater than " << PD_eps_on_hyperplane << "!" << endl;
+			cout << "Distance from testing point is less than " << eps_on_hyperplane * 10 << ", but greater than " << eps_on_hyperplane << "!" << endl;
 			//system("pause");
 		}
-#endif // PP_DEBUG /**/
+#endif // PP_DEBUG
 
 		if (dist < eps_on_hyperplane)
 			return true;
@@ -2243,6 +2235,14 @@ namespace SF {
 	static inline bool PointInsideHalfspace_i(PT_vector_T x, int i, double eps_on_hyperplane) {
 		double a_DoT_x_MinuS_b = Vector_DotProduct(PD_A[i], x) - PD_b[i];
 		double distanceToHyperplane = fabs(a_DoT_x_MinuS_b) / PD_norm_a[i];
+
+		#ifdef PP_DEBUG
+		if (distanceToHyperplane > eps_on_hyperplane && distanceToHyperplane < eps_on_hyperplane * 10) {
+			cout << "Distance from testing point is less than " << eps_on_hyperplane * 10 << ", but greater than " << eps_on_hyperplane << "!" << endl;
+			//system("pause");
+		}
+		#endif // PP_DEBUG /**/
+
 		if (distanceToHyperplane < eps_on_hyperplane)
 			return false;
 		if (a_DoT_x_MinuS_b < 0)
@@ -2282,6 +2282,13 @@ namespace SF {
 	static inline int PointLocation_i(PT_vector_T x, int i, double eps_on_hyperplane, double* a_DoT_x_MinuS_b) {
 		*a_DoT_x_MinuS_b = Vector_DotProduct(PD_A[i], x) - PD_b[i];
 		double dist = fabs(*a_DoT_x_MinuS_b) / PD_norm_a[i];
+
+		#ifdef PP_DEBUG
+		if (dist > eps_on_hyperplane && dist < eps_on_hyperplane * 10) {
+			cout << "Distance from testing point is less than " << eps_on_hyperplane * 10 << ", but greater than " << eps_on_hyperplane << "!" << endl;
+			//system("pause");
+		}
+		#endif // PP_DEBUG /**/
 
 		if (dist < eps_on_hyperplane)// <a,x> = b
 			return PP_ON_HYPERPLANE;
@@ -2356,7 +2363,7 @@ namespace SF {
 	}
 
 	static inline void Print_Vector(PT_vector_T x) {
-		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++) cout << setw(PP_SETW) << x[j];
+		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++) cout << x[j] << "\t";
 		if (PP_OUTPUT_LIMIT < PD_n) cout << "	...";
 	}
 
@@ -2377,7 +2384,52 @@ namespace SF {
 			(*eps) *= 2;
 	}
 
-	static inline void TWIDDLE // https://doi.org/10.1145/362384.362502
+	static inline int TWIDDLE__BinomialCoefficient(int n, int k, int* p) { // |p|=n+2
+		int x, y, z;
+		bool done = false;
+		int B;
+
+		assert(n <= PP_MM);
+
+		TWIDDLE_Make_p(p, n, k);
+		B = 0;
+		while (!done) {
+			TWIDDLE_Run(&x, &y, &z, p, &done);
+			if (B == PF_INT_MAX) cout << "TWIDDLE__BinomialCoefficient warning: value of integer variable B has exceeded PF_INT_MAX = " << PF_INT_MAX << endl;
+			B++;
+		}
+		return B;
+	}
+
+	static inline void TWIDDLE__CodeToSubset(int code, int* a, int* c, int n, int m, int* p, bool* done) {
+		static int x, y, z;
+
+		TWIDDLE_Make_p(p, n, m);
+		for (int k = 0; k < m; k++)
+			c[k] = a[n - m + k];
+
+		if (code == 0) return;
+
+		for (int i = 0; i < code; i++) {
+			TWIDDLE_Run(&x, &y, &z, p, done);
+			if (*done)
+				return;
+			c[z - 1] = a[x - 1];
+		}
+	}
+
+	static inline void TWIDDLE_Make_p(int* p, int n, int m) {
+		// p - auxiliary integer array for generating all combinations of m out of n objects.
+		assert(n >= m && m > 0);
+		p[0] = n + 1;
+		p[n + 1] = -2;
+		for (int j = 1; j <= n - m; j++)
+			p[j] = 0;
+		for (int j = n - m + 1; j <= n; j++)
+			p[j] = j - n + m;
+	}
+
+	static inline void TWIDDLE_Run // https://doi.org/10.1145/362384.362502
 	(int* x, int* y, int* z, int* p, bool* done) {
 		int i, j, k;
 		j = 0;
@@ -2431,35 +2483,6 @@ namespace SF {
 		p[i] = 0;
 		*x = j;
 		*y = i;
-	}
-
-	static inline void TWIDDLE_CodeToSubset(int code, int* a, int* c, int n, int m, int* x, int* y, int* z, int* p, bool* done, int* nextI) {
-		if (*nextI == 0) {
-			for (int k = 0; k < m; k++)
-				c[k] = a[n - m + k];
-			if (code == 0) {
-				(*nextI)++;
-				return;
-			}
-		}
-
-		do {
-			TWIDDLE(x, y, z, p, done);
-			assert(!*done);
-			c[*z - 1] = a[*x - 1];
-			(*nextI)++;
-		} while (*nextI < code);
-	}
-
-	static inline void TWIDDLE_Make_p(int* p, int n, int m) {
-		// p - auxiliary integer array for generating all combinations of m out of n objects.
-		assert(n >= m && m > 0);
-		p[0] = n + 1;
-		p[n + 1] = -2;
-		for (int j = 1; j <= n - m; j++)
-			p[j] = 0;
-		for (int j = n - m + 1; j <= n; j++)
-			p[j] = j - n + m;
 	}
 
 	static inline void Shift(PT_vector_T point, PT_vector_T shiftVector, double factor, PT_vector_T shiftedPoint) {
@@ -2546,6 +2569,13 @@ namespace SF {
 	static inline void Vector_PlusEquals(PT_vector_T equalVector, PT_vector_T plusVector) { // equalVector += plusVector
 		for (int j = 0; j < PD_n; j++)
 			equalVector[j] += plusVector[j];
+	}
+
+	static inline void Vector_Random(PT_vector_T x, int seed) {
+		srand(seed);
+		for (int i = 0; i < PD_n; i++) {
+			x[i] = 2 * rand() - RAND_MAX;
+		}
 	}
 
 	static inline void Vector_Round(PT_vector_T x, double eps_round) {
