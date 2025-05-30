@@ -10,7 +10,7 @@ This include file is part of Problem-Parameters.h
 
 #define PP_MPS_FORMAT
 
-/*============================== adlittle LP problem ===========================*
+/*============================== adlittle LP problem ===========================*/
 // Number of equations : 15
 // Subspace dimension : 82
 #define PP_PROBLEM_NAME		"adlittle"
@@ -175,7 +175,7 @@ This include file is part of Problem-Parameters.h
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
-/// Elapsed time: 1
+// Elapsed time: 1
 // Number of iterations: 4616
 // Objective function: 104.823166666645093414445
 // Distance to polytope: 9.34363697524531744420528e-13
@@ -241,8 +241,14 @@ This include file is part of Problem-Parameters.h
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
+// Elapsed time: 344
+// Number of iterations: 20119607
+// Objective function: 301.263653950768571121444
+// Distance to polytope: 9.96934394263653700685132e-13
+// Number of including inequality hyperplanes: 68
+//------------------------------------------------------------------------------
 
-/*============================== stocfor1 LP problem ============================*/
+/*============================== stocfor1 LP problem ============================*
 // Number of equations: 63
 // Subspace dimension: 48
 #define PP_PROBLEM_NAME		"stocfor1"	
@@ -256,11 +262,11 @@ This include file is part of Problem-Parameters.h
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
-// Elapsed time: 1431
-// Number of iterations: 12652316
-// Objective function: 25361.7923976303391100373
-// Distance to polytope: 1.22553174645548738350398e-12
-// Number of including inequality hyperplanes: 29
+// Elapsed time: 1377
+// Number of iterations: 42123668
+// Objective function: 25426.8061500511248596013
+// Distance to polytope: 9.96497898019737736204466e-13
+// Number of including inequality hyperplanes: 33
 //------------------------------------------------------------------------------
 
 //============================================================================/**/
