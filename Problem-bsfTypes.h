@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: BIP (Block-lterative Projection) method (MPI)
+Theme: FIP (Feasible Iterative Projection) method (MPI)
 Module: Problem-bsfTypes.h (Predefined BSF Problem Types)
 Prefix: PT_bsf
 Author: Leonid B. Sokolinsky

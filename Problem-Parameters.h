@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: BIP (Block-lterative Projection) method (MPI)
+Theme: FIP (Feasible Iterative Projection) method (MPI)
 Module: Problem-Parameters.h (Problem Parameters)
 Prefix: PP
 Author: Leonid B. Sokolinsky
@@ -29,7 +29,7 @@ This source code has been produced with using BSF-skeleton
 
 /*------------------------------------------------------------------------------*/
 
-#define PP_METHOD_NAME "BIP (MPI)"
+#define PP_METHOD_NAME "FIP (MPI)"
 
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_DEBUG

@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: BIP (Block-lterative Projection) method (No MPI)
+Theme: FIP (Feasible Iterative Projection) method (No MPI)
 Module: Problem-bsfCode.cpp (Implementation of Problem Code)
 Prefix:	PC_bsf	- BSF Predefined Problem Functions
 		SF		- Shared Functionc
@@ -138,13 +138,14 @@ void PC_bsf_MainArguments(int argc, char* argv[]) {
 }
 
 void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int* success) {
-	if (Distance_PointToHyperplane_i(BSF_sv_parameter.x, mapElem->constraint_i) <= PP_EPS_ON_HYPERPLANE) {
+
+	if (Distance_PointToHyperplane_i(BSF_sv_parameter.x, mapElem->constraint_i) < PP_EPS_ON_HYPERPLANE) {
 		*success = false;
 		return;
 	}
 
 	if (!PD_isEquation[mapElem->constraint_i])
-		if (Vector_DotProduct(PD_A[mapElem->constraint_i], BSF_sv_parameter.x) - PD_b[mapElem->constraint_i] < 0) { // <a,z> - b <= 0
+		if (Vector_DotProduct(PD_A[mapElem->constraint_i], BSF_sv_parameter.x) - PD_b[mapElem->constraint_i] < 0) { // <a,z> - b < 0
 			*success = false;
 			return;
 		}
@@ -210,9 +211,9 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	#endif
 
 	#ifdef PP_MAXPROJECTION
-	cout << "Pseudoprojection method: Max" << endl;
+	cout << "Pseudoprojection method: Kaczmarz" << endl;
 	#else
-	cout << "Pseudoprojection method: BIP" << endl;
+	cout << "Pseudoprojection method: Cimmino" << endl;
 	#endif // !PP_MAXPROJECTION
 
 	cout << "PP_EPS_ZERO\t\t" << PP_EPS_ZERO << endl;

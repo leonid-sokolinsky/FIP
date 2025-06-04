@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: BIP (Block-lterative Projection) method (MPI)
+Theme: FIP (Feasible Iterative Projection) method (MPI)
 Module: BSF-Forwards.h (Problem Independent Function Forwards)
 Author: Leonid B. Sokolinsky 
 This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky/BSF-skeleton)

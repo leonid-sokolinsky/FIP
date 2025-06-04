@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: BIP (Block-lterative Projection) method (No MPI)
+Theme: FIP (Feasible Iterative Projection) method (No MPI)
 Module: Problem-Parameters.h (Problem Parameters)
 Prefix: PP
 Author: Leonid B. Sokolinsky
@@ -29,17 +29,17 @@ This source code has been produced with using BSF-skeleton
 
 /*------------------------------------------------------------------------------*/
 
-#define PP_METHOD_NAME "BIP (no MPI)"
+#define PP_METHOD_NAME "FIP (no MPI)"
 
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_DEBUG
+#define PP_MAXPROJECTION
 //#define PP_MATRIX_OUTPUT
 //#define PP_SAVE_ITER_IN_X0
 #define PP_SAVE_RESULT
 
 //================================ Problem Parameters ==========================
 #define PP_MM				(PP_M+2*PP_N)		// Maximal number of constraints
-
 #define PP_MAX_ITER_COUNT	10000000000		// Maximal count of iterations
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	4 // Number of Elements to output

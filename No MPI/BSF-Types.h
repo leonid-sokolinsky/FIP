@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: BIP (Block-lterative Projection) method (No MPI)
+Theme: FIP (Feasible Iterative Projection) method (No MPI)
 Module: BSF-Types.h (Problem Independent Types)
 Prefix: BT
 Author: Leonid B. Sokolinsky 

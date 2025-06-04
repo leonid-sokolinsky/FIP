@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: BIP (Block-lterative Projection) method (MPI)
+Theme: FIP (Feasible Iterative Projection) method (MPI)
 Module: Problem-bsfParameters.h (BSF-skeleton Parameters)
 Prefix: PP_BSF
 Author: Leonid B. Sokolinsky

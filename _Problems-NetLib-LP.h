@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: BIP (Block-lterative Projection) method (No MPI)
+Theme: FIP (Feasible Iterative Projection) method (No MPI)
 Module: _Problems-NetLib-LP.h (Problems from the NETLIB LP Test Problem Set)
 Prefix: PP
 Author: Leonid B. Sokolinsky
@@ -10,7 +10,7 @@ This include file is part of Problem-Parameters.h
 
 #define PP_MPS_FORMAT
 
-/*============================== adlittle LP problem ===========================*/
+/*============================== adlittle LP problem ===========================*
 // Number of equations : 15
 // Subspace dimension : 82
 #define PP_PROBLEM_NAME		"adlittle"
@@ -21,8 +21,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 13202
@@ -42,8 +40,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 /// Elapsed time: 0
 // Number of iterations: 4678
@@ -63,8 +59,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 10
 // Number of iterations: 66253
@@ -84,13 +78,11 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Zero point is feasible
 //------------------------------------------------------------------------------
 
-/*============================== fit1d LP problem ==============================*
+/*============================== fit1d LP problem ==============================*/
 // Number of equations : 1
 // Subspace dimension : 1025
 #define PP_PROBLEM_NAME		"fit1d"
@@ -101,8 +93,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Zero point is feasible
 //------------------------------------------------------------------------------
@@ -118,14 +108,13 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Zero point is feasible
 //------------------------------------------------------------------------------
 
 /*============================== israel LP problem =============================*
 // Number of equations: 0
+// Subspace dimension: 142
 #define PP_PROBLEM_NAME		"israel"
 #define PP_M 174	// Number of constraints in mps-file
 #define PP_N 142	// Number of variables in mps-file
@@ -134,8 +123,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 9
@@ -155,8 +142,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Zero point is feasible
 //------------------------------------------------------------------------------
@@ -172,14 +157,25 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 1
 // Number of iterations: 4616
 // Objective function: 104.823166666645093414445
 // Distance to polytope: 9.34363697524531744420528e-13
 // Number of including inequality hyperplanes: 190
+//------------------------------------------------------------------------------
+
+/*============================== sc105 LP problem ==============================*
+#define PP_PROBLEM_NAME		"sc105"
+#define PP_M 104	// Number of constraints in mps-file
+#define PP_N 103	// Number of variables in mps-file
+#define PP_MAX_OBJ_VALUE 52.202061211707248062628010857689 // Exact maximum value of objective function
+//------------------------------------------------------------------------------
+#define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
+#define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
+#define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//------------------------------------------------------------------------------
+// Zero point is feasible
 //------------------------------------------------------------------------------
 
 /*============================== sc50a LP problem ==============================*
@@ -193,8 +189,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Zero point is feasible
 //------------------------------------------------------------------------------
@@ -208,23 +202,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
-//------------------------------------------------------------------------------
-// Zero point is feasible
-//------------------------------------------------------------------------------
-
-/*============================== sc105 LP problem ==============================*
-#define PP_PROBLEM_NAME		"sc105"
-#define PP_M 104	// Number of constraints in mps-file
-#define PP_N 103	// Number of variables in mps-file
-#define PP_MAX_OBJ_VALUE 52.202061211707248062628010857689 // Exact maximum value of objective function
-//------------------------------------------------------------------------------
-#define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Zero point is feasible
 //------------------------------------------------------------------------------
@@ -238,8 +215,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 344
 // Number of iterations: 20119607
@@ -259,8 +234,6 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
-//-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 1377
 // Number of iterations: 42123668

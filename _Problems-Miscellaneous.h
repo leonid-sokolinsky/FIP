@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: BIP (Block-lterative Projection) method (No MPI)
+Theme: FIP (Feasible Iterative Projection) method (No MPI)
 Module: _Problems-Miscellaneous.h (Miscellaneous LP problems)
 Prefix: PP
 Author: Leonid B. Sokolinsky
@@ -72,6 +72,8 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ZERO				1E-15					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Accuracy of belonging to hyperplane
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 127
