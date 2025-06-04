@@ -1,4 +1,4 @@
-# BSF-BIP
+# BSF-FIP
 Parallel implementation of the Block-iterative projection method (BIP algorithm) [1] using BSF-skeleton [2, 3].
 
 1. Aharoni R., Censor Y. Block-iterative projection methods for parallel computation of solutions to convex feasibility problems. Linear Algebra Appl. North-Holland, 1989. Vol. 120. P. 165–175. DOI:10.1016/0024-3795(89)90375-3.
