@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: FIP (Feasible Iterative Projection) method (No MPI)
+Theme: FIP (Feasible point Iterative Projection) method (No MPI)
 Module: Problem-bsfTypes.h (Predefined BSF Problem Types)
 Prefix: PT_bsf
 Author: Leonid B. Sokolinsky

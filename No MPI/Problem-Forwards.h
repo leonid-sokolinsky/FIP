@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: FIP (Feasible Iterative Projection) method (No MPI)
+Theme: FIP (Feasible point Iterative Projection) method (No MPI)
 Module: Problem-Forwards.h (Problem Function Forwards)
 Author: Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton

@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: FIP (Feasible Iterative Projection) method (No MPI)
+Theme: FIP (Feasible point Iterative Projection) method (No MPI)
 Module: Problem-bsfCode.cpp (Implementation of Problem Code)
 Prefix:	PC_bsf	- BSF Predefined Problem Functions
 		SF		- Shared Functionc
@@ -236,7 +236,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "F(x) = "<< ObjF(PD_x) << endl;
 
 	#ifdef PP_DEBUG
-	cout << "x0 on hyperplanes: "; Print_HyperplanesIncludingPoint(PD_x, PP_EPS_ON_HYPERPLANE);
+	//cout << "x0 on hyperplanes: "; Print_HyperplanesIncludingPoint(PD_x, PP_EPS_ON_HYPERPLANE);
 	#endif // PP_DEBUG
 
 	cout << "\n-------------------------------------------" << endl;
@@ -249,7 +249,7 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	cout << "// Number of iterations: " << PD_iterNo << endl;
 	cout << "// Objective function: " << ObjF(parameter.x) << endl;
 	cout << "// Distance to polytope: " << Distance_PointToPolytope(parameter.x) << endl;
-	cout << "// z on hyperplanes: "; Print_HyperplanesIncludingPoint(parameter.x, PP_EPS_ON_HYPERPLANE); cout << endl;
+	//cout << "// z on hyperplanes: "; Print_HyperplanesIncludingPoint(parameter.x, PP_EPS_ON_HYPERPLANE); cout << endl;
 	cout << "// Number of including inequality hyperplanes: " << Number_IncludingNeHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
 	cout << "================================================" << endl;
 
@@ -902,7 +902,7 @@ namespace SF {
 
 		if (PD_n != PP_N) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "MPS__MakeProblem error: Number of variables in mps-file = " << PD_n << " not equal to PP_M = " << PP_N << "." << endl;
+				cout << "MPS__MakeProblem error: Number of variables in mps-file = " << PD_n << " not equal to PP_N = " << PP_N << "." << endl;
 			return false;
 		}
 

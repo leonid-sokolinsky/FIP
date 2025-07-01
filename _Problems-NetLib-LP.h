@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: FIP (Feasible Iterative Projection) method (No MPI)
+Theme: FIP (Feasible point Iterative Projection) method (No MPI)
 Module: _Problems-NetLib-LP.h (Problems from the NETLIB LP Test Problem Set)
 Prefix: PP
 Author: Leonid B. Sokolinsky
@@ -10,7 +10,7 @@ This include file is part of Problem-Parameters.h
 
 #define PP_MPS_FORMAT
 
-/*============================== adlittle LP problem ===========================*
+/*============================== adlittle LP problem ===========================*/
 // Number of equations : 15
 // Subspace dimension : 82
 #define PP_PROBLEM_NAME		"adlittle"
@@ -82,7 +82,7 @@ This include file is part of Problem-Parameters.h
 // Zero point is feasible
 //------------------------------------------------------------------------------
 
-/*============================== fit1d LP problem ==============================*/
+/*============================== fit1d LP problem ==============================*
 // Number of equations : 1
 // Subspace dimension : 1025
 #define PP_PROBLEM_NAME		"fit1d"
@@ -122,7 +122,7 @@ This include file is part of Problem-Parameters.h
 //------------------------------------------------------------------------------
 #define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+#define PP_EPS_ON_HYPERPLANE	1E-12	// Precision for point to be in halfspace
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 9
@@ -144,6 +144,8 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
 //------------------------------------------------------------------------------
 // Zero point is feasible
+//------------------------------------------------------------------------------
+
 //------------------------------------------------------------------------------
 
 /*============================== recipe LP problem =============================*
@@ -204,6 +206,44 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
 //------------------------------------------------------------------------------
 // Zero point is feasible
+//------------------------------------------------------------------------------
+
+/*============================== scagr7 LP problem ==============================*
+// Number of equations : 84
+// Subspace dimension : 56
+#define PP_PROBLEM_NAME	"scagr7"
+#define PP_M 129		// Number of constraints in mps-file
+#define PP_N 140		// Number of variables in mps-file
+#define PP_MAX_OBJ_VALUE 2331389.824330984	// Exact maximum value of objective function
+//--------------------------------------------------------------------------
+#define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
+#define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
+#define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//------------------------------------------------------------------------------
+// Elapsed time: 10
+// Number of iterations: 253434
+// Objective function: 1632971.02128593600355089
+// Distance to polytope: 9.97917797778629684133842e-13
+// Number of including inequality hyperplanes: 29
+//------------------------------------------------------------------------------
+
+/*============================== scsd1 LP problem ==============================*
+// Number of equations : 77
+// Subspace dimension : 683
+#define PP_PROBLEM_NAME	"scsd1"
+#define PP_M 77			// Number of constraints in mps-file
+#define PP_N 760		// Number of variables in mps-file
+#define PP_MAX_OBJ_VALUE -8.6666666743333647292533502995263	// Exact maximum value of objective function
+//--------------------------------------------------------------------------
+#define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
+#define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
+#define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Precision for point to be in halfspace
+//------------------------------------------------------------------------------
+// Elapsed time: 137
+// Number of iterations: 170896
+// Objective function: -14.7251531794086805149391
+// Distance to polytope: 9.91047368421529525762281e-13
+// Number of including inequality hyperplanes: 200
 //------------------------------------------------------------------------------
 
 /*============================== share2b LP problem ============================*

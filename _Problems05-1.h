@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: FIP (Feasible Iterative Projection) method (No MPI)
+Theme: FIP (Feasible point Iterative Projection) method (No MPI)
 Module: Problems05-1.h (LP problems of dimension 5 with 1 randome inequality)
 Prefix: PP
 Author: Leonid B. Sokolinsky

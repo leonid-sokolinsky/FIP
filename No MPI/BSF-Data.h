@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: FIP (Feasible Iterative Projection) method (No MPI)
+Theme: FIP (Feasible point Iterative Projection) method (No MPI)
 Module: BSF-Data.h (Problem Independent Variables & Data Structures)
 Prefix: BD
 Author: Leonid B. Sokolinsky 

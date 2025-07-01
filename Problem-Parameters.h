@@ -40,7 +40,7 @@ This source code has been produced with using BSF-skeleton
 //================================ Problem Parameters ==========================
 #define PP_MM				(PP_M+2*PP_N)		// Maximal number of constraints
 
-#define PP_MAX_ITER_COUNT	10000000000		// Maximal count of iterations
+//#define PP_MAX_ITER_COUNT	10000000000		// Maximal count of iterations
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	4 // Number of Elements to output
 #define PP_SETW 24

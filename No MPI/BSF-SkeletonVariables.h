@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: FIP (Feasible Iterative Projection) method (No MPI)
+Theme: FIP (Feasible point Iterative Projection) method (No MPI)
 Module: BSF-SceletonVariables.h (Skeleton Variables)
 Prefix: BSF_sv
 Author: Leonid B. Sokolinsky
