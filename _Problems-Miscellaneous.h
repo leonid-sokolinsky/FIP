@@ -15,7 +15,7 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_PROJECTION		PP_EPS_ZERO		// Accuracy of belonging to hyperplane
 */
 
-/*============================== nguyen5 LP problem ============================*
+/*============================== nguyen5 LP problem ============================*/
 #define PP_PROBLEM_NAME	"nguyen5"
 #define PP_MPS_FORMAT
 #define PP_M 4		// Number of constrains
@@ -36,9 +36,9 @@ This include file is part of Problem-Parameters.h
 // Number of including inequality hyperplanes: 5
 //------------------------------------------------------------------------------
 
-/*============================== simpleCube LP problem ==========================*
+/*============================== cube LP problem ==========================*
 #define PP_MPS_FORMAT
-#define PP_PROBLEM_NAME	"simpleCube"
+#define PP_PROBLEM_NAME	"cube"
 #ifdef PP_MPS_FORMAT
 #define PP_M 3		// Number of constraints
 #define PP_N 3		// Number of variables
@@ -62,7 +62,7 @@ This include file is part of Problem-Parameters.h
 // Number of including inequality hyperplanes: 3
 //------------------------------------------------------------------------------
 
-/*============================== cubeAndHyperplane LP problem ===================*/
+/*============================== cubeAndHyperplane LP problem ===================*
 #define PP_MPS_FORMAT
 #define PP_PROBLEM_NAME	"cubeAndHyperplane"
 #define PP_M 4		// Number of rows in *.mtx
